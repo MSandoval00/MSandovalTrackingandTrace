@@ -1,0 +1,46 @@
+﻿@model BL.UnidadEntrega
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Unidades de entrega estados</h2>
+<hr />
+<div class="container">
+    @using (Html.BeginForm("Form", "UnidadEntrega", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            @Html.HiddenFor(Model => Model.IdUnidad)
+            <div class="col-md-2">
+                @Html.LabelFor(model => Model.NumeroPlaca)
+                @Html.TextBoxFor(model => Model.NumeroPlaca, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => Model.Modelo)
+                @Html.TextBoxFor(model => Model.Modelo, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => Model.Marca)
+                @Html.TextBoxFor(model => Model.Marca, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => Model.AnioFabricacion)
+                @Html.TextBoxFor(model => Model.AnioFabricacion, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => Model.EstatusUnidad.IdEstatus)
+                @Html.DropDownListFor(model => Model.EstatusUnidad.IdEstatus, new SelectList(Model.EstatusUnidad.EstatusUnidads, "IdEstatus", "Estatus"), "Selecciona Estatus de Unidad", new { @class = "form-control btn btn-success dropdown-toggle" })
+            </div>
+
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                <input type="submit" class="btn btn-success" value="Guardar Unidad" />
+                @Html.ActionLink("Cancelar", "GetAll", "UnidadEntrega", new { @class = "btn btn-danger" })
+            </div>
+
+        </div>
+    }
+</div>
+

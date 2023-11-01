@@ -33,8 +33,8 @@ namespace DL
         public virtual DbSet<EstatusEntrega> EstatusEntregas { get; set; }
         public virtual DbSet<EstatusUnidad> EstatusUnidads { get; set; }
         public virtual DbSet<Paquete> Paquetes { get; set; }
-        public virtual DbSet<Repartidor> Repartidors { get; set; }
         public virtual DbSet<UnidadEntrega> UnidadEntregas { get; set; }
+        public virtual DbSet<Repartidor> Repartidors { get; set; }
     
         public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll()
         {
@@ -57,6 +57,100 @@ namespace DL
                 new ObjectParameter("Email", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetByEmail_Result>("UsuarioGetByEmail", emailParameter);
+        }
+    
+        public virtual ObjectResult<RepartidorGetAll_Result> RepartidorGetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RepartidorGetAll_Result>("RepartidorGetAll");
+        }
+    
+        public virtual ObjectResult<UnidadEntregaGetAll_Result> UnidadEntregaGetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UnidadEntregaGetAll_Result>("UnidadEntregaGetAll");
+        }
+    
+        public virtual ObjectResult<RolGetAll_Result> RolGetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RolGetAll_Result>("RolGetAll");
+        }
+    
+        public virtual int UsuarioAdd(string userName, byte[] password, Nullable<int> idRol, string email, string nombre, string apellidoPaterno, string apellidoMaterno)
+        {
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(byte[]));
+    
+            var idRolParameter = idRol.HasValue ?
+                new ObjectParameter("IdRol", idRol) :
+                new ObjectParameter("IdRol", typeof(int));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var apellidoPaternoParameter = apellidoPaterno != null ?
+                new ObjectParameter("ApellidoPaterno", apellidoPaterno) :
+                new ObjectParameter("ApellidoPaterno", typeof(string));
+    
+            var apellidoMaternoParameter = apellidoMaterno != null ?
+                new ObjectParameter("ApellidoMaterno", apellidoMaterno) :
+                new ObjectParameter("ApellidoMaterno", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioAdd", userNameParameter, passwordParameter, idRolParameter, emailParameter, nombreParameter, apellidoPaternoParameter, apellidoMaternoParameter);
+        }
+    
+        public virtual int UsuarioDelete(Nullable<int> idUsuario)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioDelete", idUsuarioParameter);
+        }
+    
+        public virtual int UsuarioUpdate(Nullable<int> idUsuario, string userName, byte[] password, Nullable<int> idRol, string email, string nombre, string apellidoPaterno, string apellidoMaterno)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(int));
+    
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(byte[]));
+    
+            var idRolParameter = idRol.HasValue ?
+                new ObjectParameter("IdRol", idRol) :
+                new ObjectParameter("IdRol", typeof(int));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var apellidoPaternoParameter = apellidoPaterno != null ?
+                new ObjectParameter("ApellidoPaterno", apellidoPaterno) :
+                new ObjectParameter("ApellidoPaterno", typeof(string));
+    
+            var apellidoMaternoParameter = apellidoMaterno != null ?
+                new ObjectParameter("ApellidoMaterno", apellidoMaterno) :
+                new ObjectParameter("ApellidoMaterno", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioUpdate", idUsuarioParameter, userNameParameter, passwordParameter, idRolParameter, emailParameter, nombreParameter, apellidoPaternoParameter, apellidoMaternoParameter);
         }
     }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BL" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BL" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:10369/Repartidor.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="Repartidor">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ApellidoMaterno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ApellidoPaterno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FechaIngreso" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Fotografía" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IdRepartidor" type="xs:int" />
+      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Repartidores" nillable="true" type="q1:ArrayOfanyType" />
+      <xs:element minOccurs="0" name="Telefono" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UnidadEntrega" nillable="true" type="tns:UnidadEntrega" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Repartidor" nillable="true" type="tns:Repartidor" />
+  <xs:complexType name="UnidadEntrega">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnioFabricacion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EstatusUnidad" nillable="true" type="tns:EstatusUnidad" />
+      <xs:element minOccurs="0" name="IdUnidad" type="xs:int" />
+      <xs:element minOccurs="0" name="Marca" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Modelo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroPlaca" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="UnidadEntregas" nillable="true" type="q2:ArrayOfanyType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UnidadEntrega" nillable="true" type="tns:UnidadEntrega" />
+  <xs:complexType name="EstatusUnidad">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Estatus" nillable="true" type="xs:string" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="EstatusUnidads" nillable="true" type="q3:ArrayOfanyType" />
+      <xs:element minOccurs="0" name="IdEstatus" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EstatusUnidad" nillable="true" type="tns:EstatusUnidad" />
+</xs:schema>

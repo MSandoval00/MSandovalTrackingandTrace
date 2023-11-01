@@ -51,7 +51,7 @@
           <Property Name="ApellidoMaterno" Type="varchar" MaxLength="50" />
           <Property Name="IdUnidadAsignada" Type="int" />
           <Property Name="Telefono" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="FechaInreso" Type="date" />
+          <Property Name="FechaIngreso" Type="date" />
           <Property Name="Fotografia" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Rol">
@@ -157,12 +157,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="RepartidorGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="RolGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UnidadEntregaGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UsuarioAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varbinary" Mode="In" />
+          <Parameter Name="IdRol" Type="int" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UsuarioDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
         <Function Name="UsuarioGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="UsuarioGetByEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Email" Type="varchar" Mode="In" />
         </Function>
         <Function Name="UsuarioGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UsuarioUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varbinary" Mode="In" />
+          <Parameter Name="IdRol" Type="int" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="MSandovalTrackingandTraceModelStoreContainer">
           <EntitySet Name="Entrega" EntityType="Self.Entrega" Schema="dbo" store:Type="Tables" />
@@ -254,7 +279,6 @@
           <EntitySet Name="EstatusEntregas" EntityType="MSandovalTrackingandTraceModel.EstatusEntrega" />
           <EntitySet Name="EstatusUnidads" EntityType="MSandovalTrackingandTraceModel.EstatusUnidad" />
           <EntitySet Name="Paquetes" EntityType="MSandovalTrackingandTraceModel.Paquete" />
-          <EntitySet Name="Repartidors" EntityType="MSandovalTrackingandTraceModel.Repartidor" />
           <EntitySet Name="UnidadEntregas" EntityType="MSandovalTrackingandTraceModel.UnidadEntrega" />
           <AssociationSet Name="FK__Entrega__IdEstat__276EDEB3" Association="MSandovalTrackingandTraceModel.FK__Entrega__IdEstat__276EDEB3">
             <End Role="EstatusEntrega" EntitySet="EstatusEntregas" />
@@ -264,18 +288,44 @@
             <End Role="Paquete" EntitySet="Paquetes" />
             <End Role="Entrega" EntitySet="Entregas" />
           </AssociationSet>
-          <AssociationSet Name="FK__Entrega__IdRepar__267ABA7A" Association="MSandovalTrackingandTraceModel.FK__Entrega__IdRepar__267ABA7A">
-            <End Role="Repartidor" EntitySet="Repartidors" />
-            <End Role="Entrega" EntitySet="Entregas" />
-          </AssociationSet>
           <AssociationSet Name="FK__UnidadEnt__IdEst__1BFD2C07" Association="MSandovalTrackingandTraceModel.FK__UnidadEnt__IdEst__1BFD2C07">
             <End Role="EstatusUnidad" EntitySet="EstatusUnidads" />
             <End Role="UnidadEntrega" EntitySet="UnidadEntregas" />
+          </AssociationSet>
+          <FunctionImport Name="RepartidorGetAll" ReturnType="Collection(MSandovalTrackingandTraceModel.RepartidorGetAll_Result)" />
+          <FunctionImport Name="UnidadEntregaGetAll" ReturnType="Collection(MSandovalTrackingandTraceModel.UnidadEntregaGetAll_Result)" />
+          <EntitySet Name="Repartidors" EntityType="MSandovalTrackingandTraceModel.Repartidor" />
+          <AssociationSet Name="FK__Entrega__IdRepar__267ABA7A" Association="MSandovalTrackingandTraceModel.FK__Entrega__IdRepar__267ABA7A">
+            <End Role="Repartidor" EntitySet="Repartidors" />
+            <End Role="Entrega" EntitySet="Entregas" />
           </AssociationSet>
           <AssociationSet Name="FK__Repartido__IdUni__1ED998B2" Association="MSandovalTrackingandTraceModel.FK__Repartido__IdUni__1ED998B2">
             <End Role="UnidadEntrega" EntitySet="UnidadEntregas" />
             <End Role="Repartidor" EntitySet="Repartidors" />
           </AssociationSet>
+          <FunctionImport Name="RolGetAll" ReturnType="Collection(MSandovalTrackingandTraceModel.RolGetAll_Result)" />
+          <FunctionImport Name="UsuarioAdd">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="Binary" />
+            <Parameter Name="IdRol" Mode="In" Type="Int32" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
+            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioDelete">
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioUpdate">
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="Binary" />
+            <Parameter Name="IdRol" Mode="In" Type="Int32" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
+            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="UsuarioGetAll_Result">
           <Property Type="Int32" Name="IdUsuario" Nullable="false" />
@@ -346,21 +396,6 @@
           <Property Name="CodigoRastreo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Entregas" Relationship="MSandovalTrackingandTraceModel.FK__Entrega__IdPaque__25869641" FromRole="Paquete" ToRole="Entrega" />
         </EntityType>
-        <EntityType Name="Repartidor">
-          <Key>
-            <PropertyRef Name="IdRepartidor" />
-          </Key>
-          <Property Name="IdRepartidor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IdUnidadAsignada" Type="Int32" />
-          <Property Name="Telefono" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="FechaInreso" Type="DateTime" Precision="0" />
-          <Property Name="Fotografia" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Entregas" Relationship="MSandovalTrackingandTraceModel.FK__Entrega__IdRepar__267ABA7A" FromRole="Repartidor" ToRole="Entrega" />
-          <NavigationProperty Name="UnidadEntrega" Relationship="MSandovalTrackingandTraceModel.FK__Repartido__IdUni__1ED998B2" FromRole="Repartidor" ToRole="UnidadEntrega" />
-        </EntityType>
         <EntityType Name="UnidadEntrega">
           <Key>
             <PropertyRef Name="IdUnidad" />
@@ -398,18 +433,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Entrega__IdRepar__267ABA7A">
-          <End Type="MSandovalTrackingandTraceModel.Repartidor" Role="Repartidor" Multiplicity="0..1" />
-          <End Type="MSandovalTrackingandTraceModel.Entrega" Role="Entrega" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Repartidor">
-              <PropertyRef Name="IdRepartidor" />
-            </Principal>
-            <Dependent Role="Entrega">
-              <PropertyRef Name="IdRepartidor" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__UnidadEnt__IdEst__1BFD2C07">
           <End Type="MSandovalTrackingandTraceModel.EstatusUnidad" Role="EstatusUnidad" Multiplicity="0..1" />
           <End Type="MSandovalTrackingandTraceModel.UnidadEntrega" Role="UnidadEntrega" Multiplicity="*" />
@@ -419,6 +442,51 @@
             </Principal>
             <Dependent Role="UnidadEntrega">
               <PropertyRef Name="IdEstatusUnidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="RepartidorGetAll_Result">
+          <Property Type="Int32" Name="IdRepartidor" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdUnidad" Nullable="false" />
+          <Property Type="String" Name="Telefono" Nullable="false" MaxLength="20" />
+          <Property Type="DateTime" Name="FechaIngreso" Nullable="true" />
+          <Property Type="String" Name="Fotografia" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="UnidadEntregaGetAll_Result">
+          <Property Type="Int32" Name="IdUnidad" Nullable="false" />
+          <Property Type="String" Name="NumeroPlaca" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Modelo" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Marca" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="AnioFabricacion" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="IdEstatus" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Repartidor">
+          <Key>
+            <PropertyRef Name="IdRepartidor" />
+          </Key>
+          <Property Name="IdRepartidor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdUnidadAsignada" Type="Int32" />
+          <Property Name="Telefono" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FechaIngreso" Type="DateTime" Precision="0" />
+          <Property Name="Fotografia" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Entregas" Relationship="MSandovalTrackingandTraceModel.FK__Entrega__IdRepar__267ABA7A" FromRole="Repartidor" ToRole="Entrega" />
+          <NavigationProperty Name="UnidadEntrega" Relationship="MSandovalTrackingandTraceModel.FK__Repartido__IdUni__1ED998B2" FromRole="Repartidor" ToRole="UnidadEntrega" />
+        </EntityType>
+        <Association Name="FK__Entrega__IdRepar__267ABA7A">
+          <End Type="MSandovalTrackingandTraceModel.Repartidor" Role="Repartidor" Multiplicity="0..1" />
+          <End Type="MSandovalTrackingandTraceModel.Entrega" Role="Entrega" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Repartidor">
+              <PropertyRef Name="IdRepartidor" />
+            </Principal>
+            <Dependent Role="Entrega">
+              <PropertyRef Name="IdRepartidor" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -434,6 +502,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="RolGetAll_Result">
+          <Property Type="Int32" Name="IdRol" Nullable="false" />
+          <Property Type="String" Name="Tipo" Nullable="false" MaxLength="20" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -541,20 +613,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Repartidors">
-            <EntityTypeMapping TypeName="MSandovalTrackingandTraceModel.Repartidor">
-              <MappingFragment StoreEntitySet="Repartidor">
-                <ScalarProperty Name="Fotografia" ColumnName="Fotografia" />
-                <ScalarProperty Name="FechaInreso" ColumnName="FechaInreso" />
-                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-                <ScalarProperty Name="IdUnidadAsignada" ColumnName="IdUnidadAsignada" />
-                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
-                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="IdRepartidor" ColumnName="IdRepartidor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UnidadEntregas">
             <EntityTypeMapping TypeName="MSandovalTrackingandTraceModel.UnidadEntrega">
               <MappingFragment StoreEntitySet="UnidadEntrega">
@@ -567,6 +625,57 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="RepartidorGetAll" FunctionName="MSandovalTrackingandTraceModel.Store.RepartidorGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSandovalTrackingandTraceModel.RepartidorGetAll_Result">
+                <ScalarProperty Name="IdRepartidor" ColumnName="IdRepartidor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="IdUnidad" ColumnName="IdUnidad" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="Fotografia" ColumnName="Fotografia" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UnidadEntregaGetAll" FunctionName="MSandovalTrackingandTraceModel.Store.UnidadEntregaGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSandovalTrackingandTraceModel.UnidadEntregaGetAll_Result">
+                <ScalarProperty Name="IdUnidad" ColumnName="IdUnidad" />
+                <ScalarProperty Name="NumeroPlaca" ColumnName="NumeroPlaca" />
+                <ScalarProperty Name="Modelo" ColumnName="Modelo" />
+                <ScalarProperty Name="Marca" ColumnName="Marca" />
+                <ScalarProperty Name="AnioFabricacion" ColumnName="AnioFabricacion" />
+                <ScalarProperty Name="IdEstatus" ColumnName="IdEstatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Repartidors">
+            <EntityTypeMapping TypeName="MSandovalTrackingandTraceModel.Repartidor">
+              <MappingFragment StoreEntitySet="Repartidor">
+                <ScalarProperty Name="Fotografia" ColumnName="Fotografia" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="IdUnidadAsignada" ColumnName="IdUnidadAsignada" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdRepartidor" ColumnName="IdRepartidor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="RolGetAll" FunctionName="MSandovalTrackingandTraceModel.Store.RolGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSandovalTrackingandTraceModel.RolGetAll_Result">
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="MSandovalTrackingandTraceModel.Store.UsuarioAdd" />
+          <FunctionImportMapping FunctionImportName="UsuarioDelete" FunctionName="MSandovalTrackingandTraceModel.Store.UsuarioDelete" />
+          <FunctionImportMapping FunctionImportName="UsuarioUpdate" FunctionName="MSandovalTrackingandTraceModel.Store.UsuarioUpdate" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

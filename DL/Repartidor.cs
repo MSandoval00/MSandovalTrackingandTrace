@@ -26,7 +26,7 @@ namespace DL
         public string ApellidoMaterno { get; set; }
         public Nullable<int> IdUnidadAsignada { get; set; }
         public string Telefono { get; set; }
-        public Nullable<System.DateTime> FechaInreso { get; set; }
+        public Nullable<System.DateTime> FechaIngreso { get; set; }
         public string Fotografia { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

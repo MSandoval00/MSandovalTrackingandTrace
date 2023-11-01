@@ -83,10 +83,19 @@
     <Compile Include="Repartidor.cs">
       <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
     </Compile>
+    <Compile Include="RepartidorGetAll_Result.cs">
+      <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
+    </Compile>
     <Compile Include="Rol.cs">
       <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
     </Compile>
+    <Compile Include="RolGetAll_Result.cs">
+      <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnidadEntrega.cs">
+      <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnidadEntregaGetAll_Result.cs">
       <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
     </Compile>
     <Compile Include="Usuario.cs">

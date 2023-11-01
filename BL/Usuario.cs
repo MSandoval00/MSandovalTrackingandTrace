@@ -17,20 +17,14 @@ namespace BL
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
         public List<object> Usuarios { get; set; }
-        public bool Correct { get; set; }
-        public string ErrorMessage { get; set; }
-        public object Object { get; set; }
-        public List<object> Objects { get; set; }
-        public Exception Ex { get; set; }
-        public static BL.Usuario GetAll()
+        public static List<object> GetAll()
         {
-            BL.Usuario result = new BL.Usuario();
+            List<object> listaUsuario = new List<object>();
             try
             {
                 using (DL.MSandovalTrackingandTraceEntities context = new DL.MSandovalTrackingandTraceEntities())
                 {
                     var query = context.UsuarioGetAll().ToList();
-                    result.Objects = new List<object>();
                     foreach (var row in query)
                     {
                         BL.Usuario usuario = new BL.Usuario();
@@ -45,28 +39,25 @@ namespace BL
                         usuario.ApellidoPaterno=row.ApellidoPaterno;
                         usuario.ApellidoMaterno=row.ApellidoMaterno;
 
-                        result.Objects.Add(usuario);
+                        listaUsuario.Add(usuario);
                     }
-                    result.Correct = true;
                 }
             }
             catch (Exception ex)
             {
-                result.Correct = false;
-                result.ErrorMessage = ex.Message;
-                result.Ex = ex;
+                Console.WriteLine(ex.Message);
             }
-            return result;
+            return listaUsuario;
         }
-        public static BL.Usuario GetById(int IdUsuario)
+        public static object GetById(int IdUsuario)
         {
-            BL.Usuario result = new BL.Usuario();
+            object ObjectUsuario = new object();
             try
             {
                 using (DL.MSandovalTrackingandTraceEntities context = new DL.MSandovalTrackingandTraceEntities())
                 {
                     var query = context.UsuarioGetById(IdUsuario).Single();
-                    result.Object = new List<object>();
+                    ObjectUsuario = new List<object>();
                     if (query != null)
                     {
                         BL.Usuario usuario=new BL.Usuario();
@@ -80,8 +71,7 @@ namespace BL
                         usuario.Nombre=query.Nombre;
                         usuario.ApellidoPaterno=query.ApellidoPaterno;
                         usuario.ApellidoMaterno=query.ApellidoMaterno;
-                        result.Object=usuario;
-                        result.Correct=true;
+                        ObjectUsuario=usuario;
 
                     }
 
@@ -89,41 +79,128 @@ namespace BL
             }
             catch (Exception ex)
             {
-                result.Correct = false;
-                result.ErrorMessage=ex.Message;
-                result.Ex=ex;
+                Console.WriteLine(ex.Message);
             }
-            return result;
+            return ObjectUsuario;
         }
-        public static  BL.Usuario UsuarioGetByEmail(string Email)
-        {
-            Usuario result=new Usuario();
+        public static object UsuarioGetByEmail(string Email)
+        {  
+            object ObjectUsuario = new object();
+            //bool ObjectUsusarioCorrect =new bool();
+  
             try
             {
                 using (DL.MSandovalTrackingandTraceEntities context= new DL.MSandovalTrackingandTraceEntities())
                 {
                     var query = context.UsuarioGetByEmail(Email).FirstOrDefault();
-                    result.Object=new List<object>();
+                    ObjectUsuario=new List<object>();
                     if (query!=null)
                     {
                         Usuario usuario=new Usuario();
                         usuario.IdUsuario=query.IdUsuario;
                         usuario.Email=  query.Email;
                         usuario.Password= query.Password;
-                        result.Object = usuario;
-                        result.Correct = true;
+                        ObjectUsuario = usuario;
+                        //ObjectUsusarioCorrect=true;
                     }
                 }
             }
             catch (Exception ex)
             {
-                result.Correct = false;
-                result.ErrorMessage = ex.Message;
-                result.Ex = ex;
+                Console.WriteLine(ex.Message);
             }
-            return result;
+            return ObjectUsuario;
         }
-        
+        public static bool Add(Usuario usuario)
+        {
+            bool CorrectUsuario=new bool();
+            try
+            {
+                using (DL.MSandovalTrackingandTraceEntities context =new DL.MSandovalTrackingandTraceEntities())
+                {
+                    var query = context.UsuarioAdd(usuario.UserName,
+                        usuario.Password,
+                        usuario.Rol.IdRol,
+                        usuario.Email,
+                        usuario.Nombre,
+                        usuario.ApellidoPaterno,
+                        usuario.ApellidoMaterno);
+                    if (query>1)
+                    {
+                        CorrectUsuario = true;
+                    }
+                    else
+                    {
+                        CorrectUsuario=false;
+                        Console.WriteLine("El usuario no fue agregado");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return CorrectUsuario;
+        }
+        public static bool Update(Usuario usuario)
+        {
+            bool CorrectUsuario = new bool();
+            try
+            {
+                using (DL.MSandovalTrackingandTraceEntities context=new DL.MSandovalTrackingandTraceEntities())
+                {
+                    var query = context.UsuarioUpdate(
+                        usuario.IdUsuario,
+                        usuario.UserName,
+                        usuario.Password,
+                        usuario.Rol.IdRol,
+                        usuario.Email,
+                        usuario.Nombre,
+                        usuario.ApellidoPaterno,
+                        usuario.ApellidoMaterno);
+                    if (query>1)
+                    {
+                        CorrectUsuario = true;
+                    }
+                    else
+                    {
+                        CorrectUsuario=false;
+                        Console.WriteLine("No se pudo actualizar el usuario");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+            return CorrectUsuario;
+        }
+        public static bool Delete(int IdUsuario)
+        {
+            bool correctUsuario = new bool();
+            try
+            {
+                using (DL.MSandovalTrackingandTraceEntities context=new DL.MSandovalTrackingandTraceEntities())
+                {
+                    var query = context.UsuarioDelete(IdUsuario);
+                    if (query>0)
+                    {
+                        correctUsuario = true;
+                    }
+                    else
+                    {
+                        correctUsuario=false;
+                        Console.WriteLine("No se pudo eliminar el usuario");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return correctUsuario;
+        }
 
     }
 }

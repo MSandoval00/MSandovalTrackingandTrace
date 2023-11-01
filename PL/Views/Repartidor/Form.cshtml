@@ -1,0 +1,98 @@
+﻿@model BL.Repartidor
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Agrega los datos del repartidor</h2>
+<hr />
+<div class="container">
+    @using (Html.BeginForm("Form", "Repartidor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            @Html.HiddenFor(Model => Model.IdRepartidor)
+            <div class="col-md-3">
+                @Html.LabelFor(model => Model.Nombre)
+                @Html.TextBoxFor(model => Model.Nombre, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => Model.ApellidoPaterno)
+                @Html.TextBoxFor(model => Model.ApellidoPaterno, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => Model.ApellidoMaterno)
+                @Html.TextBoxFor(model => Model.ApellidoMaterno, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                    @Html.LabelFor(model => Model.UnidadEntrega.IdUnidad)
+                    @Html.DropDownListFor(model=>model.UnidadEntrega.IdUnidad,new SelectList(Model.UnidadEntrega.UnidadEntregas,"IdUnidad","NumeroPlaca"),"Selecciona una unidad", new {@class="form-control btn btn-success dropdown-toggle"})
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => Model.Telefono)
+                @Html.TextBoxFor(model => Model.Telefono, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @{
+                    var fechaIngreso = Model.FechaIngreso?.ToString("yyyy-MM-dd") ?? "";
+                }
+                @Html.LabelFor(model => Model.FechaIngreso)
+                @Html.TextBoxFor(model => Model.FechaIngreso, new { @class = "form-control", @type = "date", @Value = fechaIngreso, @min = "1900-01-01", @max = "9999-12-31" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => Model.Fotografía)
+                @if (Model.Fotografía == "" || Model.Fotografía == null)
+                {
+                    <br /><img src="https://static.vecteezy.com/system/resources/previews/007/033/146/non_2x/profile-icon-login-head-icon-vector.jpg" id="img" class="img-rounded" width="100" height="100" />
+                    <br /><input id="I" name="Imagen" type="file" class="form-control-static" onchange="ValidarImagen(), VisualizarImagen(this)" />
+                }
+                else
+                {
+                    <br /><img src="data:image/*;base64,@Model.Fotografía" id="img" class="img-rounded" width="100" height="100" />
+                    <br /><input id="I" name="Imagen" type="file" class="form-control-static" onchange="ValidarImagen(), VisualizarImagen(this)" />
+                }
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                <input type="submit" class="btn btn-success" value="Guardar" />
+                @Html.ActionLink("Cancelar", "GetAll", "Repartidor", new { @class = "btn btn-danger" })
+            </div>
+
+        </div>
+        }
+    </div>
+<script type="text/javascript">
+    function ValidarImagen() {
+        var extensionesPermitidas = ['jpeg', 'jpg', 'png'];
+        var extesionArchivo = document.getElementById("I").value.split('.').pop().toLowerCase();
+        var isValidFile = false;
+        for (var index in extensionesPermitidas) {
+            if (extesionArchivo === extensionesPermitidas[index]) {
+                isValidFile = true;
+                break;
+
+            }
+        }
+        if (!isValidFile) {
+            alert("La extesiones permitidas son: *." + extensionesPermitidas.join(', *.'));
+            $('#I').val("");
+        }
+        return isValidFile;
+    }
+    function VisualizarImagen() {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
