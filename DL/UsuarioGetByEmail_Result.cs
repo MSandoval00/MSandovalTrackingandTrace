@@ -14,6 +14,8 @@ namespace DL
     public partial class UsuarioGetByEmail_Result
     {
         public int IdUsuario { get; set; }
+        public int IdRol { get; set; }
+        public string Tipo { get; set; }
         public string Email { get; set; }
         public byte[] Password { get; set; }
     }

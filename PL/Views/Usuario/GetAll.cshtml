@@ -19,7 +19,6 @@
                     <tr>
                         <th class="text-center">Actualizar</th>
                         <th class="text-center">Nombre de usuario</th>
-                        <th class="text-center">Password</th>
                         <th class="text-center">Rol</th>
                         <th class="text-center">Email</th>
                         <th class="text-center">Nombre</th>
@@ -34,7 +33,6 @@
                         <tr class="text-center">
                             <td><a class="btn btn-warning" href="@Url.Action("Form", "Usuario", new { IdUsuario = usuario.IdUsuario })"><span class="glyphicon glyphicon-pencil"></span> </a></td>
                             <td>@usuario.UserName</td>
-                            <td>@usuario.Password</td>
                             <td>@usuario.Rol.Tipo</td>
                             <td>@usuario.Email</td>
                             <td>@usuario.Nombre</td>

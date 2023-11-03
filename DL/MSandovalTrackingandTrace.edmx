@@ -272,9 +272,6 @@
           <FunctionImport Name="UsuarioGetById" ReturnType="Collection(MSandovalTrackingandTraceModel.UsuarioGetById_Result)">
           <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="UsuarioGetByEmail" ReturnType="Collection(MSandovalTrackingandTraceModel.UsuarioGetByEmail_Result)">
-          <Parameter Name="Email" Mode="In" Type="String" />
-          </FunctionImport>
           <EntitySet Name="Entregas" EntityType="MSandovalTrackingandTraceModel.Entrega" />
           <EntitySet Name="EstatusEntregas" EntityType="MSandovalTrackingandTraceModel.EstatusEntrega" />
           <EntitySet Name="EstatusUnidads" EntityType="MSandovalTrackingandTraceModel.EstatusUnidad" />
@@ -314,7 +311,7 @@
             <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="UsuarioDelete">
-            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="UsuarioUpdate">
             <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
@@ -325,6 +322,9 @@
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
             <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioGetByEmail" ReturnType="Collection(MSandovalTrackingandTraceModel.UsuarioGetByEmail_Result)">
+            <Parameter Name="Email" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="UsuarioGetAll_Result">
@@ -348,11 +348,6 @@
           <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="ApellidoMaterno" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="UsuarioGetByEmail_Result">
-          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
-          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
-          <Property Type="Binary" Name="Password" Nullable="false" MaxLength="20" />
         </ComplexType>
         <EntityType Name="Entrega">
           <Key>
@@ -506,6 +501,13 @@
           <Property Type="Int32" Name="IdRol" Nullable="false" />
           <Property Type="String" Name="Tipo" Nullable="false" MaxLength="20" />
         </ComplexType>
+        <ComplexType Name="UsuarioGetByEmail_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="Int32" Name="IdRol" Nullable="false" />
+          <Property Type="String" Name="Tipo" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+          <Property Type="Binary" Name="Password" Nullable="false" MaxLength="20" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -561,15 +563,6 @@
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
                 <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="UsuarioGetByEmail" FunctionName="MSandovalTrackingandTraceModel.Store.UsuarioGetByEmail">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="MSandovalTrackingandTraceModel.UsuarioGetByEmail_Result">
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -676,6 +669,17 @@
           <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="MSandovalTrackingandTraceModel.Store.UsuarioAdd" />
           <FunctionImportMapping FunctionImportName="UsuarioDelete" FunctionName="MSandovalTrackingandTraceModel.Store.UsuarioDelete" />
           <FunctionImportMapping FunctionImportName="UsuarioUpdate" FunctionName="MSandovalTrackingandTraceModel.Store.UsuarioUpdate" />
+          <FunctionImportMapping FunctionImportName="UsuarioGetByEmail" FunctionName="MSandovalTrackingandTraceModel.Store.UsuarioGetByEmail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSandovalTrackingandTraceModel.UsuarioGetByEmail_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -50,15 +50,6 @@ namespace DL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetById_Result>("UsuarioGetById", idUsuarioParameter);
         }
     
-        public virtual ObjectResult<UsuarioGetByEmail_Result> UsuarioGetByEmail(string email)
-        {
-            var emailParameter = email != null ?
-                new ObjectParameter("Email", email) :
-                new ObjectParameter("Email", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetByEmail_Result>("UsuarioGetByEmail", emailParameter);
-        }
-    
         public virtual ObjectResult<RepartidorGetAll_Result> RepartidorGetAll()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RepartidorGetAll_Result>("RepartidorGetAll");
@@ -151,6 +142,15 @@ namespace DL
                 new ObjectParameter("ApellidoMaterno", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UsuarioUpdate", idUsuarioParameter, userNameParameter, passwordParameter, idRolParameter, emailParameter, nombreParameter, apellidoPaternoParameter, apellidoMaternoParameter);
+        }
+    
+        public virtual ObjectResult<UsuarioGetByEmail_Result> UsuarioGetByEmail(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetByEmail_Result>("UsuarioGetByEmail", emailParameter);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -61,7 +63,7 @@ namespace PL.Controllers
                 if (resultUsuario != null)
                 {
                     usuario = (BL.Usuario)resultUsuario;
-                    usuario.Rol.Roles = resultRol;
+                    usuario.Rol.Roles = resultRol;                   
                 }
             }
             else//Add
@@ -71,12 +73,12 @@ namespace PL.Controllers
             return View(usuario);
         }
         [HttpPost]
-        public ActionResult Form(BL.Usuario usuario, string password)
+        public ActionResult Form(BL.Usuario usuario)
         {
-            byte[] contraEncriptada=Encoding.UTF8.GetBytes(password);
+            //byte[] contraEncriptada=Encoding.UTF8.GetBytes(Password);
             if (usuario.IdUsuario==0)
             {
-                usuario.Password = contraEncriptada;
+                //usuario.Password = contraEncriptada;
                 bool result = BL.Usuario.Add(usuario);
                 if (result)
                 {
@@ -89,7 +91,6 @@ namespace PL.Controllers
             }
             else
             {
-                usuario.Password=contraEncriptada;
                 bool result = BL.Usuario.Update(usuario);
                 if (result)
                 {

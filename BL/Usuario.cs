@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -125,7 +127,7 @@ namespace BL
                         usuario.Nombre,
                         usuario.ApellidoPaterno,
                         usuario.ApellidoMaterno);
-                    if (query>1)
+                    if (query>0)
                     {
                         CorrectUsuario = true;
                     }
@@ -158,7 +160,7 @@ namespace BL
                         usuario.Nombre,
                         usuario.ApellidoPaterno,
                         usuario.ApellidoMaterno);
-                    if (query>1)
+                    if (query>0)
                     {
                         CorrectUsuario = true;
                     }
@@ -201,6 +203,21 @@ namespace BL
             }
             return correctUsuario;
         }
+        //public static string DecryptData(string password)
+        //{
+        //    password = password.Replace(" ", "+");
+        //    int mod4 = password.Length % 4;
+        //    if (mod4 > 0)
+        //    {
+        //        password += new string('=', 4 - mod4);
+        //    }
+        //    byte[] encryptedBytes = Convert.FromBase64String(password);
+        //    MemoryStream ms = new MemoryStream();
+        //    CryptoStream decStream = new CryptoStream(ms, (ICryptoTransform)TripleDESCryptoServiceProvider.Create(), CryptoStreamMode.Write);
+        //    decStream.Write(encryptedBytes, 0, encryptedBytes.Length);
+        //    decStream.FlushFinalBlock();
+        //    return Encoding.UTF8.GetString(ms.ToArray());
+        //}
 
     }
 }

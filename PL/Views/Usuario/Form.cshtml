@@ -15,19 +15,6 @@
         @Html.HiddenFor(model => Model.IdUsuario)
         <div class="row">
             <div class="col-md-3">
-                @Html.LabelFor(model => Model.UserName)
-                @Html.TextBoxFor(model => Model.UserName, new { @class = "form-control" })
-            </div>
-            <div class="col-md-3">
-                @Html.LabelFor(model => Model.Password)
-                @Html.TextBoxFor(model => Model.Password, new { @class = "form-control", @type = "password", @name = "pswd", @placeholder = "Ingrese su Password", @required = "" })
-                @*@if (Model.Password==null)
-                {
-                    var password = Model.Password.ToString();
-                    byte[] encriptada = System.Text.Encoding.UTF8.GetBytes(password);
-                }*@
-            </div>
-            <div class="col-md-3">
                 @Html.LabelFor(model => Model.Rol.IdRol)
                 @Html.DropDownListFor(model => Model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "Tipo"), "Selecciona un rol", new { @class = "form-control btn btn-warning dropdown-toggle" })
             </div>
@@ -35,8 +22,6 @@
                 @Html.LabelFor(model => Model.Email)
                 @Html.TextBoxFor(model => Model.Email, new { @class = "form-control" })
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 @Html.LabelFor(model => Model.Nombre)
                 @Html.TextBoxFor(model => Model.Nombre, new { @class = "form-control" })
@@ -45,14 +30,31 @@
                 @Html.LabelFor(model => Model.ApellidoPaterno)
                 @Html.TextBoxFor(model => Model.ApellidoPaterno, new { @class = "form-control" })
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 @Html.LabelFor(model => Model.ApellidoMaterno)
                 @Html.TextBoxFor(model => Model.ApellidoMaterno, new { @class = "form-control" })
             </div>
+            <div class="col-md-3">
+                @Html.LabelFor(model => Model.UserName)
+                @Html.TextBoxFor(model => Model.UserName, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @if (Model.Password != null)
+                {
+                    @Html.HiddenFor(model => Model.Password)
+                }
+                else
+                {
+                    @Html.LabelFor(model => Model.Password)
+                    @Html.TextBoxFor(model => Model.Password, new { @class = "form-control", @type = "password", @name = "pswd", @placeholder = "Password", @required = "" })
+                }
+            </div>
         </div>
         <hr />
         <div class="row">
-            <button type="submit" class="btn btn-success">Guardar</button>
+            <input type="submit" class="btn btn-success" value="Guardar Usuario" />
             @Html.ActionLink("Cancelar", "GetAll", "Usuario", new { @class = "btn btn-danger" })
         </div>
     }
