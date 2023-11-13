@@ -38,7 +38,7 @@
                             <td>@usuario.Nombre</td>
                             <td>@usuario.ApellidoPaterno</td>
                             <td>@usuario.ApellidoMaterno</td>
-                            <td><a class="btn btn-danger" href="@Url.Action("Delete", "Usuario", new { IdUsuario = usuario.IdUsuario })"><span class="glyphicon glyphicon-trash"></span> </a></td>       
+                            <td><a class="btn btn-danger" href="@Url.Action("Delete", "Usuario", new { IdUsuario = usuario.IdUsuario })", onclick="return confirm('¿Estas seguro de eliminar este usuario?')"><span class="glyphicon glyphicon-trash"></span> </a></td>       
                         </tr>
                     }
                     </tbody>

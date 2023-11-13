@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EstatusUnidad.cs" />
+    <Compile Include="Paquete.cs" />
     <Compile Include="Repartidor.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="UnidadEntrega.cs" />

@@ -21,25 +21,16 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @*@{ 
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
+                    @{
                         var rol = Context.Session["Rol"] as string;
                     }
-                    @if (rol != "Usuario")
+
+                    @if (rol != null || rol != "Usuario")
                     {
-                        @if (rol != "Admin")
-                        {*@
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="@Url.Action("GetAll","Repartidor")">Repartidores</a><br />
-                                    <a class="dropdown-item" href="@Url.Action("GetAll","UnidadEntrega")">Unidades</a><br />
-                                    <a class="dropdown-item" href="@Url.Action("GetAll","Usuario")">Usuarios</a><br />
-                                </div>
-                            </li>
-                        @*}
-                        else
-                        {*@
+                        <li>@Html.ActionLink("Paquetes", "Repartidor", "Usuario")</li>
+                        if (rol == "Administrador")
+                        {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Repartidor</a>
                                 <div class="dropdown-menu">
@@ -48,9 +39,36 @@
                                     <a class="dropdown-item" href="@Url.Action("MiUnidad","Usuario")">Mi unidad</a><br />
                                 </div>
                             </li>
-                        @*}*@
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="@Url.Action("GetAll","Repartidor")">Repartidores</a><br />
+                                    <a class="dropdown-item" href="@Url.Action("GetAll","UnidadEntrega")">Unidades</a><br />
+                                    <a class="dropdown-item" href="@Url.Action("GetAll","Usuario")">Usuarios</a><br />
+                                </div>
+                            </li>
+                        }
+                        else if (rol == "Repartidor")
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Repartidor</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="@Url.Action("Perfil","Repartidor")">Perfil</a><br />
+                                    <a class="dropdown-item" href="@Url.Action("Entregas","UnidadEntrega")">Mis entregas</a><br />
+                                    <a class="dropdown-item" href="@Url.Action("MiUnidad","Usuario")">Mi unidad</a><br />
+                                </div>
+                            </li>
+                        }
                         <li>@Html.ActionLink("Iniciar sesión", "Login", "Usuario")</li>
                     }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Código de Rastreo">
+                        </div>
+                        <button type="submit" class="btn btn-info">Rastrear</button>
+                    </form>
                 </ul>
             </div>
         </div>

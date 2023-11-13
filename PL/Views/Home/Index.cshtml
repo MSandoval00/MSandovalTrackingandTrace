@@ -1,31 +1,371 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+}   
+    <style type="text/css">
+
+        @@font-face {
+            font-family: 'Delivery Black';
+            src: url('https://static.dhlparcel.nl/fonts/Delivery_W_CdBlk.4a350e02a03ac62e72e9ea575b31ce84.woff') format("woff"),
+            url('https://static.dhlparcel.nl/fonts/Delivery_W_CdBlk.3f092b734173a32343d60b6f28b61035.woff2') format("woff2");
+            font-weight: 900;
+            font-style: normal
+        }
+
+        @@font-face {
+            font-family: 'Delivery Bold';
+            src: url('https://static.dhlparcel.nl/fonts/Delivery_W_Bd.e39bd2e2657ce5dd6f9c33df18529233.woff') format("woff"),
+            url('https://static.dhlparcel.nl/fonts/Delivery_W_Bd.7637928007dc8ed18d0c789995aa2af2.woff2') format("woff2");
+            font-weight: 700;
+            font-style: normal
+        }
+
+        @@font-face {
+            font-family: 'Delivery Regular';
+            src: url('https://static.dhlparcel.nl/fonts/Delivery_W_Rg.03f859bf58e4d37841070de34be7d978.woff') format("woff"),
+            url('https://static.dhlparcel.nl/fonts/Delivery_W_Rg.0f529c4324291f642ef9918cc460e232.woff2') format("woff2");
+            font-weight: 500;
+            font-style: normal
+        }
+
+        @@font-face {
+            font-family: 'Delivery Light';
+            src: url('https://static.dhlparcel.nl/fonts/Delivery_W_Lt.58fa2baad3d18bbff9ab26bf3499d94e.woff') format("woff"),
+            url('https://static.dhlparcel.nl/fonts/Delivery_W_Lt.5757a5cdc151ada483c5de3bfe0e93ce.woff2') format("woff2");
+            font-weight: 300;
+            font-style: normal
+        }
+
+        @@font-face {
+            font-family: 'Delivery Light Condensed';
+            src: url('https://static.dhlparcel.nl/fonts/Delivery_W_CdLt.4e23ecf085132857bdb54b4da7373151.woff') format("woff"),
+            url('https://static.dhlparcel.nl/fonts/Delivery_W_CdLt.073f912ebdec8b9c6091f5f7fd28fef4.woff2') format("woff2");
+            font-weight: 300;
+            font-style: normal
+        }
+
+body {
+    background: #F7F7F7;
+    margin: 0 auto;
+    max-width: 2000px;
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+.section {
+    padding: 40px 0;
+    border-bottom: 1px solid #E7E7E7;
+}
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+.sub {
+    padding: 24px 0 8px;
+}
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    border-right: 1px solid #E7E7E7;
+    height: 100vh;
+    overflow: auto;
+}
+
+.menu {
+    padding: 40px 16px;
+}
+
+p, span, a {
+    font-family:'Delivery Light', Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    line-height: 1.67;
+    color: #333333;
+}
+
+ol, ul, li, li > a {
+    font-family:'Delivery Bold', Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    line-height: 1.67;
+    color: #d40511;
+    text-decoration: none;
+    border-bottom: none;
+}
+
+ol, ul {
+    padding-inline-start: 0;
+    counter-reset: item;
+}
+
+ol.sub-menu, ol.sub-menu > li:before, ol.sub-menu > li > a {
+    padding-inline-start: 8px;
+    font-family:'Delivery Light', Arial, Helvetica, sans-serif;
+    font-weight: 300;
+}
+
+li {
+    display: block;
+}
+
+li:before {
+    content: counters(item, ".") " ";
+    counter-increment: item;
+}
+
+.menu-link {
+    text-decoration: underline;
+}
+
+.menu-link:hover {
+    opacity: 0.9;
+}
+
+h1, h6 {
+    font-family:'Delivery Black', Arial, Helvetica, sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #000000;
+}
+
+h2, h3, h4, h5 {
+    font-family:'Delivery Bold', Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    margin: 8px 0 0 0;
+}
+
+.hero h1 {
+    color: #ffffff;
+}
+
+.hero p {
+    font-family:'Delivery Regular', Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 110%;
+    line-height: 1.67;
+    color: #ffffff;
+    margin-bottom: 32px;
+}
+
+a {
+    color: #d40511;
+    text-decoration: none;
+    border-bottom: 1px solid;
+}
+
+ b {
+    font-family:'Delivery Bold', Arial, Helvetica, sans-serif;
+    font-weight: 700;
+ }
+
+ * {
+  box-sizing: border-box;
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+[class*="col-"] {
+  float: left;
+  padding: 32px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.row.header {
+    text-align: center;
+}
+
+.row.content {
+    margin: 0 5% 0 0;
+}
+
+.dhl {
+    width: 100%;
+    height: 72px;
+    padding: 16px;
+    background: rgba(255,204,0,1);
+    background: -moz-linear-gradient(left, rgba(255,204,0,1) 0%, rgba(255,204,0,1) 30%, rgba(255,229,127,1) 79%, rgba(255,240,178,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,204,0,1)), color-stop(30%, rgba(255,204,0,1)), color-stop(79%, rgba(255,229,127,1)), color-stop(100%, rgba(255,240,178,1)));
+    background: -webkit-linear-gradient(left, rgba(255,204,0,1) 0%, rgba(255,204,0,1) 30%, rgba(255,229,127,1) 79%, rgba(255,240,178,1) 100%);
+    background: -o-linear-gradient(left, rgba(255,204,0,1) 0%, rgba(255,204,0,1) 30%, rgba(255,229,127,1) 79%, rgba(255,240,178,1) 100%);
+    background: -ms-linear-gradient(left, rgba(255,204,0,1) 0%, rgba(255,204,0,1) 30%, rgba(255,229,127,1) 79%, rgba(255,240,178,1) 100%);
+    background: linear-gradient(to right, rgba(255,204,0,1) 0%, rgba(255,204,0,1) 30%, rgba(255,229,127,1) 79%, rgba(255,240,178,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffcc00', endColorstr='#fff0b2', GradientType=1 );
+}
+
+.dhl a {
+    display: inline-block;
+    font-family:'Delivery Regular', Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    color: #000000;
+    text-decoration: none;
+    border-bottom: none;
+    padding: 23px 16px;
+}
+
+.dhl a:hover, .dhl a:active, a.active {
+    color: #d40511;
+}
+
+.language {
+    display: block;
+    margin: auto 32px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.logo {
+    width: auto;
+    height: 20px;
+    float: left;
+    margin: 10px 0;
+}
+
+.hero {
+    padding: 120px 25%;
+    color: #ffffff;
+    background-image: url(images/MDP.png);
+    background-size: cover;
+    background-position: center;
+    box-shadow:inset 0 0 0 2000px rgba(0, 0, 0, 0.7);
+}
+
+img {
+    margin: 16px 0;
+}
+
+.button {
+    display: inline-block;
+    padding: 16px;
+    border-radius: 4px;
+    margin: 0 16px 16px 0;
+    font-family:'Delivery Bold', Arial, Helvetica, sans-serif;
+    font-weight: 700;
+}
+
+a.buttonText {
+    text-decoration: none;
+    border-bottom: none;
+}
+
+.ghost {
+    background-color: rgba(255,255,255,0.1);
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.ghost:hover, .ghost:focus {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.backToTop {
+    display: none;
+    width: 56px;
+    height: 56px;
+    padding: 16px;
+    border-radius: 50%;
+    background-color: #d40511;
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+}
+
+.backToTop:hover {
+    opacity: 0.8;
+}
+
+@@media only screen and (max-width: 1440px) {
+
+    .col-3 {
+        width: 33.33%;
+    }
+
+    .col-9 {
+        width: 66.66%;
+    }
+
+    .menu {
+        padding: 40px 24px;
+    }
+}
+
+@@media only screen and (max-width: 1024px) {
+
+    .section {
+    padding: 32px 0;
+    }
+
+    .sub {
+    padding: 16px 0 8px;
+    }
+
+    .sticky {
+    position: -webkit-initial;
+    position: initial;
+    top: auto;
+    background-color: #ffffff;
+    border-right: none;
+    height: auto;
+    }
+
+    .hero p {
+    font-size: 100%;
+    }
+
+    .col-3 {
+        width: 100%;
+    }
+
+    .col-9 {
+        width: 100%;
+    }
+
+    .hero {
+    padding: 40px 5%;
+    }
+
+    .row.content {
+    margin: 0;
+    }
+
+}
+    </style>
+      <div class="row header">
+        <div class="col-12 dhl" id="top">
+            <img src="https://static.dhlparcel.nl/images/cns/ecommerce/logo.png" class="logo">
+        </div>
+        <div class="col-12 hero">
+            <h1>Consultar mis paquetes</h1>
+            <p>Introduce el codigo de rastreo del paquete:  Ya sea en la barra de búsqueda de la página principal o de la parte superior de la barra</p>
+            <form class="navbar-form navbar">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Código de Rastreo">
+                </div>
+                <br />
+                <br />
+                <button type="submit" class="btn btn-info">Rastrear</button>
+            </form>
+            @*<a href="https://my.dhlparcel.nl/account/sign-in" target="blank" class="buttonText"><div class="button ghost">Go to My DHL Portal</div></a>
+        <a href="https://www.dhlparcel.nl/en/business/shipping-tools" target="blank" class="buttonText"><div class="button ghost">Support</div></a>
+        <a href="https://www.dhlparcel.nl/en/business/dhl-plugins" target="blank" class="buttonText"><div class="button ghost">Plug-ins</div></a>*@
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+    

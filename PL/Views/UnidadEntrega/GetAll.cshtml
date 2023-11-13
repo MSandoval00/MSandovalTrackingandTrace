@@ -39,7 +39,7 @@
                             <td>@unidadEntrega.Marca</td>
                             <td>@unidadEntrega.AnioFabricacion</td>
                             <td>@unidadEntrega.EstatusUnidad.Estatus</td>
-                            <td><a href="@Url.Action("Delete","UnidadEntrega",new {IdUnidad=unidadEntrega.IdUnidad})" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>
+                            <td><a href="@Url.Action("Delete","UnidadEntrega",new {IdUnidad=unidadEntrega.IdUnidad})" ,onclick="return confirm('¿Estas seguro de eliminar la unidad?')" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>
                         </tr>
                     }
                     </tbody>

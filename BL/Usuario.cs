@@ -102,6 +102,9 @@ namespace BL
                         usuario.IdUsuario=query.IdUsuario;
                         usuario.Email=  query.Email;
                         usuario.Password= query.Password;
+                        usuario.Rol = new Rol();
+                        usuario.Rol.IdRol=query.IdRol;
+                        usuario.Rol.Tipo=query.Tipo;
                         ObjectUsuario = usuario;
                         //ObjectUsusarioCorrect=true;
                     }

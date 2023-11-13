@@ -43,20 +43,30 @@
             <div class="col-md-3">
                 @if (Model.Password != null)
                 {
-                    @Html.HiddenFor(model => Model.Password)
+                    @Html.HiddenFor(model => model.Password)
                 }
                 else
                 {
                     @Html.LabelFor(model => Model.Password)
-                    @Html.TextBoxFor(model => Model.Password, new { @class = "form-control", @type = "password", @name = "pswd", @placeholder = "Password", @required = "" })
+                    @Html.TextBoxFor(model=>Model.Password, new {@class="form-control",@type="password", @id="campotexto",@name="campotexto"})
                 }
             </div>
         </div>
         <hr />
         <div class="row">
-            <input type="submit" class="btn btn-success" value="Guardar Usuario" />
+            <input type="submit" class="btn btn-success" onclick="Base64();" value="Guardar Usuario" />
             @Html.ActionLink("Cancelar", "GetAll", "Usuario", new { @class = "btn btn-danger" })
         </div>
     }
 </div>
-
+<script>
+    function Base64() {
+        var campoTexto = document.getElementById("campotexto");
+        var campoPass = campoTexto.value;
+        if (campoPass) {
+            var utf8Bytes = new TextEncoder().encode(campoPass);
+            var base64 = btoa(String.fromCharCode.apply(null, utf8Bytes));
+            campoTexto.value = base64;
+        }
+    }
+</script>

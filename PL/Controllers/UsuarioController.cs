@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace PL.Controllers
 {
@@ -39,6 +38,7 @@ namespace PL.Controllers
             byte[] inputBytes= Encoding.UTF8.GetBytes(Password);
 
             BL.Usuario result = (BL.Usuario)BL.Usuario.UsuarioGetByEmail(Email);
+            Session["Rol"] = result.Rol.Tipo;
             if (result.Email!=null)
             {
                 BL.Usuario usuario=(BL.Usuario)result;
@@ -74,11 +74,9 @@ namespace PL.Controllers
         }
         [HttpPost]
         public ActionResult Form(BL.Usuario usuario)
-        {
-            //byte[] contraEncriptada=Encoding.UTF8.GetBytes(Password);
+        {            
             if (usuario.IdUsuario==0)
             {
-                //usuario.Password = contraEncriptada;
                 bool result = BL.Usuario.Add(usuario);
                 if (result)
                 {
