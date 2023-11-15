@@ -3,15 +3,13 @@
   <xs:import schemaLocation="http://localhost:10369/Repartidor.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="Repartidor">
     <xs:sequence>
-      <xs:element minOccurs="0" name="ApellidoMaterno" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ApellidoPaterno" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="FechaIngreso" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="FechaIngreso" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Fotografía" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="IdRepartidor" type="xs:int" />
-      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Repartidores" nillable="true" type="q1:ArrayOfanyType" />
       <xs:element minOccurs="0" name="Telefono" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="UnidadEntrega" nillable="true" type="tns:UnidadEntrega" />
+      <xs:element minOccurs="0" name="Usuario" nillable="true" type="tns:Usuario" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Repartidor" nillable="true" type="tns:Repartidor" />
@@ -35,4 +33,26 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="EstatusUnidad" nillable="true" type="tns:EstatusUnidad" />
+  <xs:complexType name="Usuario">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ApellidoMaterno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ApellidoPaterno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IdUsuario" type="xs:int" />
+      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="Rol" nillable="true" type="tns:Rol" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Usuarios" nillable="true" type="q4:ArrayOfanyType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Usuario" nillable="true" type="tns:Usuario" />
+  <xs:complexType name="Rol">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IdRol" type="xs:int" />
+      <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Roles" nillable="true" type="q5:ArrayOfanyType" />
+      <xs:element minOccurs="0" name="Tipo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Rol" nillable="true" type="tns:Rol" />
 </xs:schema>

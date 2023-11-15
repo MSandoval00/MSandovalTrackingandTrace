@@ -39,6 +39,7 @@ namespace PL.Controllers
 
             BL.Usuario result = (BL.Usuario)BL.Usuario.UsuarioGetByEmail(Email);
             Session["Rol"] = result.Rol.Tipo;
+            Session["IdUsuario"] = result.IdUsuario;
             if (result.Email!=null)
             {
                 BL.Usuario usuario=(BL.Usuario)result;

@@ -18,6 +18,9 @@ namespace SLWCF
         [ServiceKnownType(typeof(BL.UnidadEntrega))]
         SLWCF.Result UnidadEntregaGetAll();
         [OperationContract]
+        [ServiceKnownType(typeof(BL.Usuario))]
+        SLWCF.Result UsuarioGetAll();
+        [OperationContract]
         [ServiceKnownType(typeof(BL.Repartidor))]
         SLWCF.Result GetById(int IdRepartidor);
         [OperationContract]

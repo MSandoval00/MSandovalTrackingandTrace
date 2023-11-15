@@ -26,6 +26,18 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="UsuarioGetAll">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UsuarioGetAllResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="UsuarioGetAllResult" nillable="true" type="q3:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetById">
     <xs:complexType>
       <xs:sequence>
@@ -36,35 +48,35 @@
   <xs:element name="GetByIdResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="GetByIdResult" nillable="true" type="q3:Result" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="GetByIdResult" nillable="true" type="q4:Result" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="Add">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/BL" minOccurs="0" name="repartidor" nillable="true" type="q4:Repartidor" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/BL" minOccurs="0" name="repartidor" nillable="true" type="q5:Repartidor" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AddResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="AddResult" nillable="true" type="q5:Result" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="AddResult" nillable="true" type="q6:Result" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="Update">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/BL" minOccurs="0" name="repartidor" nillable="true" type="q6:Repartidor" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/BL" minOccurs="0" name="repartidor" nillable="true" type="q7:Repartidor" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="UpdateResult" nillable="true" type="q7:Result" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="UpdateResult" nillable="true" type="q8:Result" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -78,7 +90,7 @@
   <xs:element name="DeleteResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="DeleteResult" nillable="true" type="q8:Result" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/SLWCF" minOccurs="0" name="DeleteResult" nillable="true" type="q9:Result" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

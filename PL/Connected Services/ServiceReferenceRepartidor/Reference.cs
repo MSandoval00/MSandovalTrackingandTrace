@@ -22,6 +22,8 @@ namespace PL.ServiceReferenceRepartidor {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(BL.Repartidor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(BL.UnidadEntrega))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(BL.EstatusUnidad))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(BL.Usuario))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(BL.Rol))]
     public partial class Result : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -143,6 +145,12 @@ namespace PL.ServiceReferenceRepartidor {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRepartidor/UnidadEntregaGetAll", ReplyAction="http://tempuri.org/IRepartidor/UnidadEntregaGetAllResponse")]
         System.Threading.Tasks.Task<PL.ServiceReferenceRepartidor.Result> UnidadEntregaGetAllAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRepartidor/UsuarioGetAll", ReplyAction="http://tempuri.org/IRepartidor/UsuarioGetAllResponse")]
+        PL.ServiceReferenceRepartidor.Result UsuarioGetAll();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRepartidor/UsuarioGetAll", ReplyAction="http://tempuri.org/IRepartidor/UsuarioGetAllResponse")]
+        System.Threading.Tasks.Task<PL.ServiceReferenceRepartidor.Result> UsuarioGetAllAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRepartidor/GetById", ReplyAction="http://tempuri.org/IRepartidor/GetByIdResponse")]
         PL.ServiceReferenceRepartidor.Result GetById(int IdRepartidor);
         
@@ -155,6 +163,8 @@ namespace PL.ServiceReferenceRepartidor {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BL.UnidadEntrega))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BL.EstatusUnidad))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BL.Usuario))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BL.Rol))]
         PL.ServiceReferenceRepartidor.Result Add(BL.Repartidor repartidor);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRepartidor/Add", ReplyAction="http://tempuri.org/IRepartidor/AddResponse")]
@@ -166,6 +176,8 @@ namespace PL.ServiceReferenceRepartidor {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BL.UnidadEntrega))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BL.EstatusUnidad))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BL.Usuario))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BL.Rol))]
         PL.ServiceReferenceRepartidor.Result Update(BL.Repartidor repartidor);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRepartidor/Update", ReplyAction="http://tempuri.org/IRepartidor/UpdateResponse")]
@@ -219,6 +231,14 @@ namespace PL.ServiceReferenceRepartidor {
         
         public System.Threading.Tasks.Task<PL.ServiceReferenceRepartidor.Result> UnidadEntregaGetAllAsync() {
             return base.Channel.UnidadEntregaGetAllAsync();
+        }
+        
+        public PL.ServiceReferenceRepartidor.Result UsuarioGetAll() {
+            return base.Channel.UsuarioGetAll();
+        }
+        
+        public System.Threading.Tasks.Task<PL.ServiceReferenceRepartidor.Result> UsuarioGetAllAsync() {
+            return base.Channel.UsuarioGetAllAsync();
         }
         
         public PL.ServiceReferenceRepartidor.Result GetById(int IdRepartidor) {

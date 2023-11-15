@@ -6,8 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="760075daa3264b7789b514dcff8a0705" Name="Diagram1">
         <EntityTypeShape EntityType="MSandovalTrackingandTraceModel.Rol" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSandovalTrackingandTraceModel.Usuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="MSandovalTrackingandTraceModel.FK__Usuario__IdRol__1367E606" ManuallyRouted="false" />
         <EntityTypeShape EntityType="MSandovalTrackingandTraceModel.Entrega" Width="1.5" PointX="7.5" PointY="5.125" />
         <EntityTypeShape EntityType="MSandovalTrackingandTraceModel.EstatusEntrega" Width="1.5" PointX="5.25" PointY="12.25" />
         <EntityTypeShape EntityType="MSandovalTrackingandTraceModel.EstatusUnidad" Width="1.5" PointX="0.75" PointY="5.625" />
@@ -16,10 +14,13 @@
         <AssociationConnector Association="MSandovalTrackingandTraceModel.FK__Entrega__IdEstat__276EDEB3" />
         <AssociationConnector Association="MSandovalTrackingandTraceModel.FK__Entrega__IdPaque__25869641" />
         <AssociationConnector Association="MSandovalTrackingandTraceModel.FK__UnidadEnt__IdEst__1BFD2C07" />
-        <EntityTypeShape EntityType="MSandovalTrackingandTraceModel.Repartidor" Width="1.5" PointX="5.25" PointY="4.875" />
+        <EntityTypeShape EntityType="MSandovalTrackingandTraceModel.Repartidor" Width="1.5" PointX="5.25" PointY="2.875" />
+        <EntityTypeShape EntityType="MSandovalTrackingandTraceModel.Usuario" Width="1.5" PointX="3" PointY="0.875" />
         <AssociationConnector Association="MSandovalTrackingandTraceModel.FK__Entrega__IdRepar__267ABA7A" />
         <AssociationConnector Association="MSandovalTrackingandTraceModel.FK__Repartido__IdUni__1ED998B2" />
-      </Diagram>
+        <AssociationConnector Association="MSandovalTrackingandTraceModel.FK__Repartido__IdUsu__34C8D9D1" />
+        <AssociationConnector Association="MSandovalTrackingandTraceModel.FK__Usuario__IdRol__1367E606" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

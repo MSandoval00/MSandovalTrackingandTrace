@@ -28,13 +28,13 @@ namespace DL
         }
     
         public virtual DbSet<Rol> Rols { get; set; }
-        public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Entrega> Entregas { get; set; }
         public virtual DbSet<EstatusEntrega> EstatusEntregas { get; set; }
         public virtual DbSet<EstatusUnidad> EstatusUnidads { get; set; }
         public virtual DbSet<Paquete> Paquetes { get; set; }
         public virtual DbSet<UnidadEntrega> UnidadEntregas { get; set; }
         public virtual DbSet<Repartidor> Repartidors { get; set; }
+        public virtual DbSet<Usuario> Usuarios { get; set; }
     
         public virtual ObjectResult<UsuarioGetAll_Result> UsuarioGetAll()
         {
@@ -151,6 +151,15 @@ namespace DL
                 new ObjectParameter("Email", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UsuarioGetByEmail_Result>("UsuarioGetByEmail", emailParameter);
+        }
+    
+        public virtual ObjectResult<EntregaGetByCodigoRastreo_Result> EntregaGetByCodigoRastreo(string codigoRastreo)
+        {
+            var codigoRastreoParameter = codigoRastreo != null ?
+                new ObjectParameter("CodigoRastreo", codigoRastreo) :
+                new ObjectParameter("CodigoRastreo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<EntregaGetByCodigoRastreo_Result>("EntregaGetByCodigoRastreo", codigoRastreoParameter);
         }
     }
 }

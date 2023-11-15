@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BL.Paquete
+@{
     ViewBag.Title = "Home Page";
 }   
     <style type="text/css">
@@ -70,50 +71,6 @@ body {
 
 .menu {
     padding: 40px 16px;
-}
-
-p, span, a {
-    font-family:'Delivery Light', Arial, Helvetica, sans-serif;
-    font-weight: 300;
-    line-height: 1.67;
-    color: #333333;
-}
-
-ol, ul, li, li > a {
-    font-family:'Delivery Bold', Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    line-height: 1.67;
-    color: #d40511;
-    text-decoration: none;
-    border-bottom: none;
-}
-
-ol, ul {
-    padding-inline-start: 0;
-    counter-reset: item;
-}
-
-ol.sub-menu, ol.sub-menu > li:before, ol.sub-menu > li > a {
-    padding-inline-start: 8px;
-    font-family:'Delivery Light', Arial, Helvetica, sans-serif;
-    font-weight: 300;
-}
-
-li {
-    display: block;
-}
-
-li:before {
-    content: counters(item, ".") " ";
-    counter-increment: item;
-}
-
-.menu-link {
-    text-decoration: underline;
-}
-
-.menu-link:hover {
-    opacity: 0.9;
 }
 
 h1, h6 {
@@ -354,17 +311,15 @@ a.buttonText {
         <div class="col-12 hero">
             <h1>Consultar mis paquetes</h1>
             <p>Introduce el codigo de rastreo del paquete:  Ya sea en la barra de búsqueda de la página principal o de la parte superior de la barra</p>
-            <form class="navbar-form navbar">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Código de Rastreo">
-                </div>
-                <br />
-                <br />
-                <button type="submit" class="btn btn-info">Rastrear</button>
-            </form>
-            @*<a href="https://my.dhlparcel.nl/account/sign-in" target="blank" class="buttonText"><div class="button ghost">Go to My DHL Portal</div></a>
-        <a href="https://www.dhlparcel.nl/en/business/shipping-tools" target="blank" class="buttonText"><div class="button ghost">Support</div></a>
-        <a href="https://www.dhlparcel.nl/en/business/dhl-plugins" target="blank" class="buttonText"><div class="button ghost">Plug-ins</div></a>*@
+                @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class= "navbar-form navbar" }))
+                {
+                    <div class="form-group">
+                        @Html.TextBoxFor(model=>Model.CodigoRastreo, new {@class="form-control", @placeholder="Codigo de Rastreo"})
+                    </div>
+                    <br />
+                    <br />
+                    <button type="submit" class="btn btn-info">Rastrear</button>
+                }
         </div>
     </div>
 

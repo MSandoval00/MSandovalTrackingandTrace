@@ -1,5 +1,4 @@
-﻿@model  BL.Usuario
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -24,6 +23,7 @@
                     @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
                     @{
                         var rol = Context.Session["Rol"] as string;
+                        var idUsuario = Context.Session["IdUsuario"];
                     }
 
                     @if (rol != null || rol != "Usuario")
@@ -36,7 +36,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="@Url.Action("Perfil","Repartidor")">Perfil</a><br />
                                     <a class="dropdown-item" href="@Url.Action("Entregas","UnidadEntrega")">Mis entregas</a><br />
-                                    <a class="dropdown-item" href="@Url.Action("MiUnidad","Usuario")">Mi unidad</a><br />
+                                    <a class="dropdown-item" href="@Url.Action("MiUnidad", "Usuario")">Mi unidad</a><br />
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
@@ -54,8 +54,8 @@
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Repartidor</a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="@Url.Action("Perfil","Repartidor")">Perfil</a><br />
-                                    <a class="dropdown-item" href="@Url.Action("Entregas","UnidadEntrega")">Mis entregas</a><br />
-                                    <a class="dropdown-item" href="@Url.Action("MiUnidad","Usuario")">Mi unidad</a><br />
+                                    <a class="dropdown-item" href="@Url.Action("Entregas","Repartidor")">Mis entregas</a><br />
+                                    <a class="dropdown-item" href="@Url.Action("MiUnidad", "Repartidor", new {IdUsuario=idUsuario})">Mi unidad</a><br />
                                 </div>
                             </li>
                         }
@@ -63,12 +63,6 @@
                     }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Código de Rastreo">
-                        </div>
-                        <button type="submit" class="btn btn-info">Rastrear</button>
-                    </form>
                 </ul>
             </div>
         </div>

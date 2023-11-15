@@ -1,0 +1,147 @@
+﻿@model BL.Paquete
+@{
+    ViewBag.Title = "GetCodigoRastreo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .triangulo-almacen {
+        width: 0;
+        height: 0;
+        border-left: 50px solid #f0ad4e;
+        border-top: 30px solid transparent;
+        border-bottom: 30px solid transparent;
+    }
+
+    .triangulo-transito {
+        width: 0;
+        height: 0;
+        border-left: 50px solid #ffd800;
+        border-top: 30px solid transparent;
+        border-bottom: 30px solid transparent;
+    }
+
+    .triangulo-ruta-entrega {
+        width: 0;
+        height: 0;
+        border-left: 50px solid #029393;
+        border-top: 30px solid transparent;
+        border-bottom: 30px solid transparent;
+    }
+
+    .triangulo-entregado {
+        width: 0;
+        height: 0;
+        border-left: 50px solid #07941b;
+        border-top: 30px solid transparent;
+        border-bottom: 30px solid transparent;
+    }
+
+    .table-dark {
+        background: #000000;
+        color: #ffffff;
+    }
+</style>
+<hr />
+@{
+    var IdPaquete = Context.Session["IdPaquete"];
+    var Detalle = Context.Session["Detalle"] as string;
+    var Peso = Context.Session["Peso"];
+    var DireccionOrigen = Context.Session["DireccionOrigen"] as string;
+    var DireccionEntrega = Context.Session["DireccionEntrega"] as string;
+    var FechaEstimadaEntrega = Context.Session["FechaEstimadaEntrega"];
+    var CodigoRastreo = Context.Session["CodigoRastreo"] as string;
+    var IdEntrega = Context.Session["IdEntrega"];
+    var FechaEntrega = Context.Session["FechaEntrega"];
+    var IdRepartidor = Context.Session["IdRepartidor"];
+    var Telefono = Context.Session["Telefono"] as string;
+    var IdEstatus = Context.Session["IdEstatus"];
+    var Estatus = Context.Session["Estatus"] as string;
+    var IdUsuario = Context.Session["IdUsuario"];
+    var NombreRepartidor = Context.Session["NombreRepartidor"] as string;
+    var ApellidoPaterno = Context.Session["ApellidoPaterno"] as string;
+    var ApellidoMaterno = Context.Session["ApellidoMaterno"] as string;
+
+}
+<div class="container">
+    <h2>Codigo de rastreo del paquete con detalle</h2>
+</div>
+<hr />
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "navbar-form navbar" }))
+{
+    <div class="form-group">
+        @Html.TextBoxFor(odel => Model.CodigoRastreo, new { @class = "form-control btn btn-dark", @placeholder = "Codigo de Rastreo" })
+    </div>
+    <button type="submit" class="btn btn-primary">Rastrear</button>
+}
+@if (CodigoRastreo != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="triangulo-almacen"><h5 class="text-center"><strong>Almacén</strong></h5></div>
+
+            </div>
+            <div class="col-md-3">
+                <div class="triangulo-transito"><h5 class="text-center"><strong>Tránsito</strong></h5></div>
+            </div>
+            <div class="col-md-3">
+                <div class="triangulo-ruta-entrega"><h5 class="text-center"><strong>Ruta de Entrega</strong></h5></div>
+                <br />
+            </div>
+            <div class="col-md-3">
+                <div class="triangulo-entregado"><h5 class="text-center"><strong>Entregado</strong></h5></div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Chofer</th>
+                        <th class="text-center">Detalle y Peso</th>
+                        <th class="text-center">Dir. Origen</th>
+                        <th class="text-center">Dir. Entrega</th>
+                        <th class="text-center">Fecha Estimada de Entrega</th>
+                        <th class="text-center">Estatus de Entrega</th>
+                        <th class="text-center">Codigo de Rastreo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center">
+                        <td>@NombreRepartidor @ApellidoPaterno @ApellidoMaterno</td>
+                        <td>@Detalle y @Peso kg</td>
+                        <td>@DireccionOrigen</td>
+                        <td>@DireccionEntrega</td>
+                        <td>@FechaEstimadaEntrega</td>
+                        @if (Estatus == "Entregado")
+                        {
+                            <td style="color: #07941b"><strong>@Estatus</strong></td>
+                        }
+                        else if (Estatus == "En Ruta de Entrega")
+                        {
+                            <td style="color: #029393"><strong>@Estatus</strong></td>
+                        }
+                        else if (Estatus == "En Tránsito")
+                        {
+                            <td style="color: #ffd800"><strong>@Estatus</strong></td>
+                        }
+                        else
+                        {
+                            <td style="#f0ad4e"><strong>@Estatus</strong></td>
+                        }
+
+                        <td style="color:">@CodigoRastreo</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div> }
+else
+{
+    <div class="alert alert-danger" role="alert">
+        Ingresa el código de rastreo.Error:@ViewBag.Message
+    </div>
+}

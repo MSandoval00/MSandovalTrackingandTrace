@@ -21,16 +21,15 @@ namespace DL
         }
     
         public int IdRepartidor { get; set; }
-        public string Nombre { get; set; }
-        public string ApellidoPaterno { get; set; }
-        public string ApellidoMaterno { get; set; }
         public Nullable<int> IdUnidadAsignada { get; set; }
         public string Telefono { get; set; }
         public Nullable<System.DateTime> FechaIngreso { get; set; }
         public string Fotografia { get; set; }
+        public Nullable<int> IdUsuario { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Entrega> Entregas { get; set; }
         public virtual UnidadEntrega UnidadEntrega { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="1fdc23c3-b13b-4143-b0d7-c2a095361ea7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="d91da32a-5c8e-4186-84c9-363bff35ef6f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,14 +22,14 @@
     <MetadataSource Address="http://localhost:10369/Repartidor.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Repartidor.xsd" MetadataType="Schema" ID="c56a28d8-4569-4581-a462-6b85b0e69def" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd4" />
-    <MetadataFile FileName="Repartidor.wsdl" MetadataType="Wsdl" ID="3df926fb-9209-4e24-8e80-09c4ddfce708" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?wsdl" />
-    <MetadataFile FileName="Repartidor1.xsd" MetadataType="Schema" ID="35c41bc3-60d0-4788-b714-ba32eb75c0f0" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd5" />
-    <MetadataFile FileName="Repartidor2.xsd" MetadataType="Schema" ID="19f59442-3249-4eab-9bca-124923f161c4" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd3" />
-    <MetadataFile FileName="Repartidor.disco" MetadataType="Disco" ID="37ad5edb-bea0-428c-9a78-39b3d75f8711" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?disco" />
-    <MetadataFile FileName="Repartidor3.xsd" MetadataType="Schema" ID="ccd8c038-f1a4-4cb5-a93e-b5a779b661c8" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd0" />
-    <MetadataFile FileName="Repartidor4.xsd" MetadataType="Schema" ID="6fc30d12-30f5-4077-9f02-30026662aa05" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd2" />
-    <MetadataFile FileName="Repartidor5.xsd" MetadataType="Schema" ID="01e42fa9-1145-4ab2-9732-7e60afd6a118" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd1" />
+    <MetadataFile FileName="Repartidor.xsd" MetadataType="Schema" ID="20a459ef-f438-4774-a657-80a6a02ca4e4" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd4" />
+    <MetadataFile FileName="Repartidor.wsdl" MetadataType="Wsdl" ID="a11135a2-bd61-4b4e-8837-9dd9d6587727" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?wsdl" />
+    <MetadataFile FileName="Repartidor1.xsd" MetadataType="Schema" ID="441fdbeb-5eba-4a23-8eeb-2b15fed2803f" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd5" />
+    <MetadataFile FileName="Repartidor2.xsd" MetadataType="Schema" ID="f473c706-ea3c-4854-9924-af5742c7ec95" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd3" />
+    <MetadataFile FileName="Repartidor.disco" MetadataType="Disco" ID="466e41b7-0702-48e1-bc8d-4833fa3b2f97" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?disco" />
+    <MetadataFile FileName="Repartidor3.xsd" MetadataType="Schema" ID="f93194f2-b6ce-4676-961a-b2b59bdf2883" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd0" />
+    <MetadataFile FileName="Repartidor4.xsd" MetadataType="Schema" ID="945dd66a-8fb2-485f-8ee2-28b91aa764ed" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd2" />
+    <MetadataFile FileName="Repartidor5.xsd" MetadataType="Schema" ID="701d1881-4ed3-49a9-87da-f2b65a59b944" SourceId="1" SourceUrl="http://localhost:10369/Repartidor.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

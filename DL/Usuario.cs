@@ -14,6 +14,12 @@ namespace DL
     
     public partial class Usuario
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Usuario()
+        {
+            this.Repartidors = new HashSet<Repartidor>();
+        }
+    
         public int IdUsuario { get; set; }
         public string UserName { get; set; }
         public byte[] Password { get; set; }
@@ -23,6 +29,8 @@ namespace DL
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Repartidor> Repartidors { get; set; }
         public virtual Rol Rol { get; set; }
     }
 }

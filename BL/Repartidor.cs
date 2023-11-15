@@ -9,13 +9,11 @@ namespace BL
     public class Repartidor
     {
         public int IdRepartidor { get; set; }
-        public string Nombre { get; set; }
-        public string ApellidoPaterno { get; set; }
-        public string ApellidoMaterno { get; set; }
         public BL.UnidadEntrega UnidadEntrega { get; set; }
         public string Telefono { get; set; }
         public DateTime? FechaIngreso { get; set; }
         public string Fotografía { get; set; }
+        public BL.Usuario Usuario { get; set; }
         public List<object> Repartidores { get; set; }
 
        
@@ -31,16 +29,20 @@ namespace BL
                     var query = (from tablaRepartidor in context.Repartidors
                                  join tablaUnidadEntrega in context.UnidadEntregas
                                  on tablaRepartidor.IdUnidadAsignada equals tablaUnidadEntrega.IdUnidad
+                                 join tablaUsuario in context.Usuarios
+                                 on tablaRepartidor.IdUsuario equals tablaUsuario.IdUsuario
+                                 
                                  select new
                                  {
                                      IdRepartidor=tablaRepartidor.IdRepartidor,
-                                     Nombre=tablaRepartidor.Nombre,
-                                     ApellidoPaterno=tablaRepartidor.ApellidoPaterno,
-                                     ApellidoMaterno=tablaRepartidor.ApellidoMaterno,
                                      IdUnidadAsignada=tablaUnidadEntrega.IdUnidad,
                                      Telefono=tablaRepartidor.Telefono,
                                      FechaIngreso=tablaRepartidor.FechaIngreso,
-                                     Fotografia=tablaRepartidor.Fotografia
+                                     Fotografia=tablaRepartidor.Fotografia,
+                                     IdUsuario=tablaUsuario.IdUsuario,
+                                     Nombre=tablaUsuario.Nombre,
+                                     ApellidoPaterno=tablaUsuario.ApellidoPaterno,
+                                     ApellidoMaterno=tablaUsuario.ApellidoMaterno
                                  });
                     listRepartidor = new List<object>();
                     if (query!=null&&query.Count()>0)
@@ -49,14 +51,16 @@ namespace BL
                         {
                             Repartidor repartidor = new Repartidor();
                             repartidor.UnidadEntrega = new UnidadEntrega();
+                            repartidor.Usuario=new Usuario();
                             repartidor.IdRepartidor = datos.IdRepartidor;
-                            repartidor.Nombre=datos.Nombre;
-                            repartidor.ApellidoPaterno=datos.ApellidoPaterno;
-                            repartidor.ApellidoMaterno=datos.ApellidoMaterno;
                             repartidor.UnidadEntrega.IdUnidad = datos.IdUnidadAsignada;
                             repartidor.Telefono = datos.Telefono;
                             repartidor.FechaIngreso = DateTime.Parse(datos.FechaIngreso.ToString());
                             repartidor.Fotografía = datos.Fotografia;
+                            repartidor.Usuario.IdUsuario = int.Parse(datos.IdUsuario.ToString());
+                            repartidor.Usuario.Nombre = datos.Nombre;
+                            repartidor.Usuario.ApellidoPaterno = datos.ApellidoPaterno;
+                            repartidor.Usuario.ApellidoMaterno = datos.ApellidoMaterno;
                             listRepartidor.Add(repartidor);
                         }
                     }
@@ -84,32 +88,37 @@ namespace BL
                     var query = (from tablaRepartidor in context.Repartidors
                                  join tablaUnidadEntrega in context.UnidadEntregas
                                  on tablaRepartidor.IdUnidadAsignada equals tablaUnidadEntrega.IdUnidad
+                                 join tablaUsuario in context.Usuarios
+                                 on tablaRepartidor.IdUsuario equals tablaUsuario.IdUsuario
                                  where tablaRepartidor.IdRepartidor==IdRepartidor
                                  select new
                                  {
                                      IdRepartidor = tablaRepartidor.IdRepartidor,
-                                     Nombre = tablaRepartidor.Nombre,
-                                     ApellidoPaterno = tablaRepartidor.ApellidoPaterno,
-                                     ApellidoMaterno = tablaRepartidor.ApellidoMaterno,
                                      IdUnidadAsignada = tablaUnidadEntrega.IdUnidad,
                                      Telefono = tablaRepartidor.Telefono,
                                      FechaIngreso = tablaRepartidor.FechaIngreso,
-                                     Fotografia = tablaRepartidor.Fotografia
+                                     Fotografia = tablaRepartidor.Fotografia,
+                                     IdUsuario=tablaRepartidor.IdUsuario,
+                                     Nombre=tablaUsuario.Nombre,
+                                     ApellidoPaterno=tablaUsuario.ApellidoPaterno,
+                                     ApellidoMaterno=tablaUsuario.ApellidoMaterno
                                  });
                     if (query!=null&& query.Count()>0)
                     {
                         BL.Repartidor repartidor=new BL.Repartidor();
                         repartidor.UnidadEntrega=new BL.UnidadEntrega();
+                        repartidor.Usuario = new Usuario();
 
                         var queryDatos=query.ToList().Single();
                         repartidor.IdRepartidor = queryDatos.IdRepartidor;
-                        repartidor.Nombre = queryDatos.Nombre;
-                        repartidor.ApellidoPaterno=queryDatos.ApellidoPaterno;
-                        repartidor.ApellidoMaterno=queryDatos.ApellidoMaterno;
                         repartidor.UnidadEntrega.IdUnidad = queryDatos.IdUnidadAsignada;
                         repartidor.Telefono=queryDatos.Telefono;
                         repartidor.FechaIngreso = DateTime.Parse(queryDatos.FechaIngreso.ToString());
                         repartidor.Fotografía = queryDatos.Fotografia;
+                        repartidor.Usuario.IdUsuario = int.Parse(queryDatos.IdUsuario.ToString());
+                        repartidor.Usuario.Nombre = queryDatos.Nombre;
+                        repartidor.Usuario.ApellidoPaterno = queryDatos.ApellidoPaterno;
+                        repartidor.Usuario.ApellidoMaterno = queryDatos.ApellidoMaterno;
                         ObjectRepartidor = repartidor;
 
                     }
@@ -133,16 +142,13 @@ namespace BL
                 using (DL.MSandovalTrackingandTraceEntities context=new DL.MSandovalTrackingandTraceEntities())
                 {
                     DL.Repartidor nuevoRepartidor = new DL.Repartidor();
-                    nuevoRepartidor.Nombre=repartidor.Nombre;
-                    nuevoRepartidor.ApellidoPaterno = repartidor.ApellidoPaterno;
-                    nuevoRepartidor.ApellidoMaterno = repartidor.ApellidoMaterno;
                     nuevoRepartidor.IdUnidadAsignada=repartidor.UnidadEntrega.IdUnidad;
                     nuevoRepartidor.Telefono=repartidor.Telefono;
                     nuevoRepartidor.FechaIngreso=repartidor.FechaIngreso;
                     nuevoRepartidor.Fotografia = repartidor.Fotografía;
+                    nuevoRepartidor.IdUsuario = repartidor.Usuario.IdUsuario;
                     context.Repartidors.Add(nuevoRepartidor);
                     context.SaveChanges();
-
                 }
                 Correct=true;
             }
@@ -165,13 +171,11 @@ namespace BL
                                  select tableRepartidor).SingleOrDefault();
                     if (query != null)
                     {
-                        query.Nombre = repartidor.Nombre;
-                        query.ApellidoPaterno=repartidor.ApellidoPaterno;
-                        query.ApellidoMaterno=repartidor.ApellidoMaterno;
                         query.IdUnidadAsignada = repartidor.UnidadEntrega.IdUnidad;
                         query.Telefono = repartidor.Telefono;
                         query.FechaIngreso=repartidor.FechaIngreso;
                         query.Fotografia = repartidor.Fotografía;
+                        query.IdUsuario = repartidor.Usuario.IdUsuario;
 
                         context.SaveChanges();
                         Correct=true;
@@ -207,6 +211,62 @@ namespace BL
                 Correct = false;
             }
             return Correct;
+        }
+        public static object UsuarioGetById(int IdUsuario)
+        {
+            object ObjectRepartidor = new object();
+            try
+            {
+                using (DL.MSandovalTrackingandTraceEntities context = new DL.MSandovalTrackingandTraceEntities())
+                {
+                    var query = (from tablaRepartidor in context.Repartidors
+                                 join tablaUnidadEntrega in context.UnidadEntregas
+                                 on tablaRepartidor.IdUnidadAsignada equals tablaUnidadEntrega.IdUnidad
+                                 join tablaUsuario in context.Usuarios
+                                 on tablaRepartidor.IdUsuario equals tablaUsuario.IdUsuario
+                                 where tablaRepartidor.IdUsuario == IdUsuario
+                                 select new
+                                 {
+                                     IdRepartidor = tablaRepartidor.IdRepartidor,
+                                     IdUnidadAsignada = tablaUnidadEntrega.IdUnidad,
+                                     Telefono = tablaRepartidor.Telefono,
+                                     FechaIngreso = tablaRepartidor.FechaIngreso,
+                                     Fotografia = tablaRepartidor.Fotografia,
+                                     IdUsuario = tablaRepartidor.IdUsuario,
+                                     Nombre = tablaUsuario.Nombre,
+                                     ApellidoPaterno = tablaUsuario.ApellidoPaterno,
+                                     ApellidoMaterno = tablaUsuario.ApellidoMaterno
+                                 });
+                    if (query != null && query.Count() > 0)
+                    {
+                        BL.Repartidor repartidor = new BL.Repartidor();
+                        repartidor.UnidadEntrega = new BL.UnidadEntrega();
+                        repartidor.Usuario = new Usuario();
+
+                        var queryDatos = query.ToList().Single();
+                        repartidor.IdRepartidor = queryDatos.IdRepartidor;
+                        repartidor.UnidadEntrega.IdUnidad = queryDatos.IdUnidadAsignada;
+                        repartidor.Telefono = queryDatos.Telefono;
+                        repartidor.FechaIngreso = DateTime.Parse(queryDatos.FechaIngreso.ToString());
+                        repartidor.Fotografía = queryDatos.Fotografia;
+                        repartidor.Usuario.IdUsuario = int.Parse(queryDatos.IdUsuario.ToString());
+                        repartidor.Usuario.Nombre = queryDatos.Nombre;
+                        repartidor.Usuario.ApellidoPaterno = queryDatos.ApellidoPaterno;
+                        repartidor.Usuario.ApellidoMaterno = queryDatos.ApellidoMaterno;
+                        ObjectRepartidor = repartidor;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("No hay registros que coincidan");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return ObjectRepartidor;
         }
     }
 }

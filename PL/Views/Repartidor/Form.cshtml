@@ -10,38 +10,28 @@
 <div class="container">
     @using (Html.BeginForm("Form", "Repartidor", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        <div class="row">
-            @Html.HiddenFor(Model => Model.IdRepartidor)
-            <div class="col-md-3">
-                @Html.LabelFor(model => Model.Nombre)
-                @Html.TextBoxFor(model => Model.Nombre, new { @class = "form-control" })
-            </div>
-            <div class="col-md-3">
-                @Html.LabelFor(model => Model.ApellidoPaterno)
-                @Html.TextBoxFor(model => Model.ApellidoPaterno, new { @class = "form-control" })
-            </div>
-            <div class="col-md-3">
-                @Html.LabelFor(model => Model.ApellidoMaterno)
-                @Html.TextBoxFor(model => Model.ApellidoMaterno, new { @class = "form-control" })
-            </div>
-            <div class="col-md-3">
-                    @Html.LabelFor(model => Model.UnidadEntrega.IdUnidad)
-                    @Html.DropDownListFor(model=>model.UnidadEntrega.IdUnidad,new SelectList(Model.UnidadEntrega.UnidadEntregas,"IdUnidad","NumeroPlaca"),"Selecciona una unidad", new {@class="form-control btn btn-success dropdown-toggle"})
-                </div>
+    <div class="row">
+        @Html.HiddenFor(Model => Model.IdRepartidor)
+        <div class="col-md-3">
+            @Html.LabelFor(model=>Model.Usuario.IdUsuario)
+            @Html.DropDownListFor(model=>Model.Usuario.IdUsuario, new SelectList(Model.Usuario.Usuarios, "IdUsuario", "Nombre"),"Selecciona el repartidor", new { @class = "form-control btn btn-info dropdown-toggle"})
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                @Html.LabelFor(model => Model.Telefono)
-                @Html.TextBoxFor(model => Model.Telefono, new { @class = "form-control" })
-            </div>
-            <div class="col-md-3">
-                @{
-                    var fechaIngreso = Model.FechaIngreso?.ToString("yyyy-MM-dd") ?? "";
-                }
-                @Html.LabelFor(model => Model.FechaIngreso)
-                @Html.TextBoxFor(model => Model.FechaIngreso, new { @class = "form-control", @type = "date", @Value = fechaIngreso, @min = "1900-01-01", @max = "9999-12-31" })
-            </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => Model.UnidadEntrega.IdUnidad)
+            @Html.DropDownListFor(model => model.UnidadEntrega.IdUnidad, new SelectList(Model.UnidadEntrega.UnidadEntregas, "IdUnidad", "NumeroPlaca"), "Selecciona una unidad", new { @class = "form-control btn btn-success dropdown-toggle" })
         </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => Model.Telefono)
+            @Html.TextBoxFor(model => Model.Telefono, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            @{
+                var fechaIngreso = Model.FechaIngreso?.ToString("yyyy-MM-dd") ?? "";
+            }
+            @Html.LabelFor(model => Model.FechaIngreso)
+            @Html.TextBoxFor(model => Model.FechaIngreso, new { @class = "form-control", @type = "date", @Value = fechaIngreso, @min = "1900-01-01", @max = "9999-12-31" })
+        </div>
+    </div>
         <div class="row">
             <div class="col-md-3">
                 @Html.LabelFor(model => Model.Fotografía)

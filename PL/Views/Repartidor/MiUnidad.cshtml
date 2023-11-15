@@ -1,0 +1,34 @@
+﻿@model BL.Repartidor
+@{
+    ViewBag.Title = "MiUnidad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/Repartidor/Card-Repartidor.css">
+@if (Model.Usuario.IdUsuario == 0)
+{
+    <div class="alert alert-danger" role="alert">
+        No hay unidad asignada para este repartidor.Error:@ViewBag.Message
+    </div>
+}
+else
+{
+    <h2 class="text-center" style="color:aliceblue">Unidad Asignada</h2>
+    <hr />
+    <div class="main">
+        <ul class="cards">
+            <li class="cards_item" id="item_salad">
+                <div class="card">
+                    <div class="card_price"><input class="btn btn-success" value="Reportar Unidad" /></div>
+                    <div class="card_image"><img src="https://assets.codepen.io/652/photo-1468777675496-5782faaea55b.jpeg" alt="mixed vegetable salad in a mason jar. "></div>
+                    <div class="card_content">
+                        <h2 class="card_title">@Model.Usuario.Nombre @Model.Usuario.ApellidoPaterno @Model.Usuario.ApellidoMaterno</h2>
+                        <div class="card_text">
+                            <p>Número de placa: @Model.UnidadEntrega.NumeroPlaca, Modelo: @Model.UnidadEntrega.Modelo Marca: @Model.UnidadEntrega.Marca Año:@Model.UnidadEntrega.AnioFabricacion</p>
+                            <p>Estado de la Unidad: </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+}

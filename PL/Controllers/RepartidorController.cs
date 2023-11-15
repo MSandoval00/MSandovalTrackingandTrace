@@ -31,8 +31,10 @@ namespace PL.Controllers
         {
             BL.Repartidor repartidor = new BL.Repartidor();
             repartidor.UnidadEntrega=new BL.UnidadEntrega();
+            repartidor.Usuario = new BL.Usuario();
             ServiceReferenceRepartidor.RepartidorClient repartidorWCF=new ServiceReferenceRepartidor.RepartidorClient();
             var resultRepartidor = repartidorWCF.UnidadEntregaGetAll();
+            var resultUsuario=repartidorWCF.UsuarioGetAll();
             if (IdRepartidor !=null)//update
             {
                 var result = repartidorWCF.GetById(IdRepartidor.Value);
@@ -40,11 +42,13 @@ namespace PL.Controllers
                 {
                     repartidor = (BL.Repartidor)result.Object;
                     repartidor.UnidadEntrega.UnidadEntregas = resultRepartidor.Objects.ToList();
+                    repartidor.Usuario.Usuarios=resultUsuario.Objects.ToList();
                 }
             }
             else//Add
             {
                 repartidor.UnidadEntrega.UnidadEntregas = resultRepartidor.Objects.ToList();
+                repartidor.Usuario.Usuarios = resultUsuario.Objects.ToList();
             }
             return View(repartidor);
         }
@@ -105,6 +109,13 @@ namespace PL.Controllers
             byte[] data = reader.ReadBytes((int)Foto.ContentLength);
             string imagen=Convert.ToBase64String(data);
             return imagen;
+        }
+        [HttpGet]
+        public ActionResult MiUnidad(int? IdUsuario)
+        {
+            BL.Repartidor result = (BL.Repartidor)BL.Repartidor.UsuarioGetById(IdUsuario.Value);
+            BL.Repartidor repartidor = result;
+            return View(repartidor);
         }
     }
 }

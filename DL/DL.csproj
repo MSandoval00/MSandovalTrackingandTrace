@@ -55,6 +55,9 @@
     <Compile Include="Entrega.cs">
       <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntregaGetByCodigoRastreo_Result.cs">
+      <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
+    </Compile>
     <Compile Include="EstatusEntrega.cs">
       <DependentUpon>MSandovalTrackingandTrace.tt</DependentUpon>
     </Compile>

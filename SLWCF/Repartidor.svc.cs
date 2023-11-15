@@ -27,6 +27,14 @@ namespace SLWCF
                 Objects = result
             };
         }
+        public SLWCF.Result UsuarioGetAll()
+        {
+            List<object> result=BL.Usuario.GetAll();
+            return new SLWCF.Result
+            {
+                Objects = result
+            };
+        }
         public SLWCF.Result GetById(int IdRepartidor)
         {
             object result=BL.Repartidor.GetById(IdRepartidor);
