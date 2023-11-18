@@ -113,8 +113,26 @@ namespace PL.Controllers
         [HttpGet]
         public ActionResult MiUnidad(int? IdUsuario)
         {
+            BL.Repartidor repartidor=new BL.Repartidor();
+            repartidor.UnidadEntrega = new BL.UnidadEntrega();
+            repartidor.UnidadEntrega.EstatusUnidad = new BL.EstatusUnidad();
+            List<object> resultEstatusUnidad = BL.EstatusUnidad.GetAll();
+            if (IdUsuario==null)
+            {
+                BL.Repartidor repartidor1=new BL.Repartidor();
+                repartidor1.Usuario = new BL.Usuario();
+                repartidor1.Usuario.IdUsuario = 0;
+                return View(repartidor1);
+            }
             BL.Repartidor result = (BL.Repartidor)BL.Repartidor.UsuarioGetById(IdUsuario.Value);
-            BL.Repartidor repartidor = result;
+            if (result==null)
+            {
+                return View();
+            }
+            
+            repartidor = result;
+            repartidor.UnidadEntrega.EstatusUnidad.EstatusUnidads = resultEstatusUnidad;
+
             return View(repartidor);
         }
     }

@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Cards";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/Paquete/cards-paquete.css">
+
+<h2 style="color:aliceblue; text-align:center">Elige que deseas realizar</h2>
+<hr />
+<section>
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+                <div class="cover item-a">
+                    <h1>Generar<br>Guía</h1>
+                    <span class="price">#1</span>
+                    <div class="card-back">
+                        <a href="@Url.Action("CrearPaquete","Paquete")">Generar Guía</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+                <div class="cover item-b">
+                    <h1>Rastrear<br>Paquete</h1>
+                    <span class="price">#2</span>
+                    <div class="card-back">
+                        <a href="#">Rastrear Paquete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+                <div class="cover item-c">
+                    <h1>Reportar/<br>Asistencia</h1>
+                    <span class="price">#3</span>
+                    <div class="card-back">
+                        <a href="#">Reportar/Asistencia</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

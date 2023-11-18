@@ -224,35 +224,54 @@ namespace BL
                                  on tablaRepartidor.IdUnidadAsignada equals tablaUnidadEntrega.IdUnidad
                                  join tablaUsuario in context.Usuarios
                                  on tablaRepartidor.IdUsuario equals tablaUsuario.IdUsuario
+                                 
                                  where tablaRepartidor.IdUsuario == IdUsuario
                                  select new
                                  {
+                                     //Repartidor
                                      IdRepartidor = tablaRepartidor.IdRepartidor,
                                      IdUnidadAsignada = tablaUnidadEntrega.IdUnidad,
                                      Telefono = tablaRepartidor.Telefono,
-                                     FechaIngreso = tablaRepartidor.FechaIngreso,
-                                     Fotografia = tablaRepartidor.Fotografia,
                                      IdUsuario = tablaRepartidor.IdUsuario,
+                                     //Usuario
                                      Nombre = tablaUsuario.Nombre,
                                      ApellidoPaterno = tablaUsuario.ApellidoPaterno,
-                                     ApellidoMaterno = tablaUsuario.ApellidoMaterno
+                                     ApellidoMaterno = tablaUsuario.ApellidoMaterno,
+                                     //UnidadEntrega
+                                     NumeroPlaca=tablaUnidadEntrega.NumeroPlaca,
+                                     Modelo=tablaUnidadEntrega.Modelo,
+                                     Marca=tablaUnidadEntrega.Marca,
+                                     AnioFabricacion=tablaUnidadEntrega.AnioFabricacion,
+                                     //EstatusUnidad
+                                     IdEstatus=tablaUnidadEntrega.EstatusUnidad.IdEstatus,
+                                     Estatus=tablaUnidadEntrega.EstatusUnidad.Estatus
+
                                  });
                     if (query != null && query.Count() > 0)
                     {
                         BL.Repartidor repartidor = new BL.Repartidor();
                         repartidor.UnidadEntrega = new BL.UnidadEntrega();
                         repartidor.Usuario = new Usuario();
+                        repartidor.UnidadEntrega.EstatusUnidad = new EstatusUnidad();
 
                         var queryDatos = query.ToList().Single();
+                        //Repartidor
                         repartidor.IdRepartidor = queryDatos.IdRepartidor;
                         repartidor.UnidadEntrega.IdUnidad = queryDatos.IdUnidadAsignada;
                         repartidor.Telefono = queryDatos.Telefono;
-                        repartidor.FechaIngreso = DateTime.Parse(queryDatos.FechaIngreso.ToString());
-                        repartidor.Fotografía = queryDatos.Fotografia;
                         repartidor.Usuario.IdUsuario = int.Parse(queryDatos.IdUsuario.ToString());
+                        //Usuario
                         repartidor.Usuario.Nombre = queryDatos.Nombre;
                         repartidor.Usuario.ApellidoPaterno = queryDatos.ApellidoPaterno;
                         repartidor.Usuario.ApellidoMaterno = queryDatos.ApellidoMaterno;
+                        //UnidadEntrega
+                        repartidor.UnidadEntrega.NumeroPlaca = queryDatos.NumeroPlaca;
+                        repartidor.UnidadEntrega.Modelo = queryDatos.Modelo;
+                        repartidor.UnidadEntrega.Marca = queryDatos.Marca;
+                        repartidor.UnidadEntrega.AnioFabricacion = queryDatos.AnioFabricacion;
+                        //EstatusUnidad
+                        repartidor.UnidadEntrega.EstatusUnidad.IdEstatus=queryDatos.IdEstatus;
+                        repartidor.UnidadEntrega.EstatusUnidad.Estatus = queryDatos.Estatus;
                         ObjectRepartidor = repartidor;
 
                     }

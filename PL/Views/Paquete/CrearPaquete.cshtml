@@ -1,0 +1,41 @@
+﻿@model BL.Paquete
+@{
+    ViewBag.Title = "CrearPaquete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Registrar paquete</h2>
+<hr />
+<div class="container">
+    <div class="row">
+        @Html.HiddenFor(model => Model.IdPaquete)
+        <form action="@Url.Action("CrearPaquete","Paquete")" method="post">
+            <div class="col-md-3">
+                @Html.LabelFor(Model => Model.Detalle)
+                @Html.TextBoxFor(Model => Model.Detalle, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(Model => Model.Peso)
+                @Html.TextBoxFor(Model => Model.Peso, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(Model => Model.DireccionOrigen)
+                @Html.TextBoxFor(Model => Model.DireccionOrigen, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(Model => Model.DireccionEntrega)
+                @Html.TextBoxFor(Model => Model.DireccionEntrega, new { @class = "form-control" })
+            </div>
+    </div>
+   
+
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <input type="submit" class="btn btn-success" name="name" value="Registrar paquete" />
+            @Html.ActionLink("Cancelar", "Cards", "Paquete", new { @class = "btn btn-danger" })
+        </div>
+    </div>
+    </form>
+</div>
+

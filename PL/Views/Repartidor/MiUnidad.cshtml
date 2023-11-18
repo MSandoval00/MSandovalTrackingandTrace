@@ -4,31 +4,126 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="~/Content/Repartidor/Card-Repartidor.css">
-@if (Model.Usuario.IdUsuario == 0)
+<h2 class="text-center" style="color:aliceblue">Unidad Asignada</h2>
+<hr />
+@if (Model.IdRepartidor == 0)
 {
     <div class="alert alert-danger" role="alert">
-        No hay unidad asignada para este repartidor.Error:@ViewBag.Message
+        No hay unidad asignada para este repartidor.
     </div>
 }
 else
 {
-    <h2 class="text-center" style="color:aliceblue">Unidad Asignada</h2>
-    <hr />
     <div class="main">
         <ul class="cards">
             <li class="cards_item" id="item_salad">
                 <div class="card">
-                    <div class="card_price"><input class="btn btn-success" value="Reportar Unidad" /></div>
-                    <div class="card_image"><img src="https://assets.codepen.io/652/photo-1468777675496-5782faaea55b.jpeg" alt="mixed vegetable salad in a mason jar. "></div>
+                    <div class="card_price"><input class="btn btn-success" onclick="showModal();" value="Reportar Unidad" /></div>
+                    <div class="card_image">
+                        @if (Model.UnidadEntrega.Modelo == "Camioneta")
+                        {
+                            <img src="https://cdn-3.expansion.mx/dims4/default/5097ccf/2147483647/strip/true/crop/600x315+0+43/resize/1200x630!/format/jpg/quality/80/?url=https%3A%2F%2Fcdn-3.expansion.mx%2F68%2F6819931aacdcaa3b35341cd6e81369b9%2Fdhl-camioneta-mercedes.jpg" alt="mixed vegetable salad in a mason jar. ">
+                        }
+                        else if (Model.UnidadEntrega.Modelo == "Sedan")
+                        {
+                            <img src="https://assets.codepen.io/652/photo-1468777675496-5782faaea55b.jpeg" alt="mixed vegetable salad in a mason jar. ">
+                        }
+                        else
+                        {
+                            <img src="https://acnews.blob.core.windows.net/imgnews/large/NAZ_9a416531fba545abaad847802741f5ea.jpg" alt="mixed vegetable salad in a mason jar. ">
+                        }
+                    </div>
                     <div class="card_content">
                         <h2 class="card_title">@Model.Usuario.Nombre @Model.Usuario.ApellidoPaterno @Model.Usuario.ApellidoMaterno</h2>
                         <div class="card_text">
-                            <p>Número de placa: @Model.UnidadEntrega.NumeroPlaca, Modelo: @Model.UnidadEntrega.Modelo Marca: @Model.UnidadEntrega.Marca Año:@Model.UnidadEntrega.AnioFabricacion</p>
-                            <p>Estado de la Unidad: </p>
+                            <p>Número de placa: @Model.UnidadEntrega.NumeroPlaca<br /> Modelo: @Model.UnidadEntrega.Modelo<br /> Marca: @Model.UnidadEntrega.Marca<br /> Año:@Model.UnidadEntrega.AnioFabricacion</p>
+                            <p>Estado de la Unidad: @Model.UnidadEntrega.EstatusUnidad.Estatus </p>
                         </div>
                     </div>
                 </div>
             </li>
         </ul>
     </div>
+    <!--Modal-->
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Llena los campos para el reporte de la Unidad</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 col-md-offset-1">
+
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">@@</span>
+                                        <input type="text" class="form-control" placeholder="email@example.com" aria-describedby="basic-addon1">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">Descripción del Detalle:</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" placeholder="Describe el detalle del reporte" style="height:150px; width:400px"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">Descripción del Detalle:</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" placeholder="Describe el detalle del reporte" style="height:150px; width:400px"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning">Mandar reporte</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Modal -->
+    <!--<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Llena los campos para completar tu compra</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-credit-card"></i></span>
+                        <input type="text" class="form-control" placeholder="Card" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-calendar-plus"></i></span>
+                        <input type="text" class="form-control" placeholder="MM/YY" aria-label="Username" aria-describedby="basic-addon1"> <br /><br />
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-calendar-plus"></i></span>
+                        <input type="text" class="form-control" placeholder="CVV" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-credit-card"></i></span>
+                        <input type="text" class="form-control" placeholder="Dirección" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="modal-footer">-->
+    @*<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>*@
+    <!--<button type="button" class="btn btn-danger" onclick="hiddenModal();">Cerrar</button>
+                    <button type="button" class="btn btn-success" onclick="BuyModal();"><i class="fa-solid fa-cart-plus"></i>Agregar al carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>-->
 }
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    function showModal() {
+        $('#Modal').modal('show');
+    }
+</script>

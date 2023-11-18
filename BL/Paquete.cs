@@ -73,5 +73,31 @@ namespace BL
             }
             return objCodigoRastreo;
         }
+        public static bool Add(Paquete paquete)
+        {
+            bool Correct=new bool();
+            try
+            {
+                using (DL.MSandovalTrackingandTraceEntities context=new DL.MSandovalTrackingandTraceEntities())
+                {
+                    DL.Paquete nuevoPaquete = new DL.Paquete();
+                    nuevoPaquete.Detalle = paquete.Detalle;
+                    nuevoPaquete.Peso=paquete.Peso;
+                    nuevoPaquete.DireccionOrigen=paquete.DireccionOrigen;
+                    nuevoPaquete.DireccionEntrega = paquete.DireccionEntrega;
+                    //nuevoPaquete.FechaEstimadaEntrega = paquete.FechaEstimadaEntrega;
+                    //nuevoPaquete.CodigoRastreo=paquete.CodigoRastreo;
+                    context.Paquetes.Add(nuevoPaquete);
+                    context.SaveChanges();
+                }
+                Correct = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Correct = false;
+            }
+            return Correct;
+        }
     }
 }
