@@ -40,7 +40,16 @@
         background: #000000;
         color: #ffffff;
     }
+
+    #map {
+        height: 400px;
+    }
 </style>
+<script>
+    (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+        key: "AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw",
+    });
+</script>
 <hr />
 @{
     var IdPaquete = Context.Session["IdPaquete"];
@@ -48,16 +57,16 @@
     var Peso = Context.Session["Peso"];
     var DireccionOrigen = Context.Session["DireccionOrigen"] as string;
     var DireccionEntrega = Context.Session["DireccionEntrega"] as string;
-    var FechaEstimadaEntrega = Context.Session["FechaEstimadaEntrega"];
+    var FechaEstimadaEntrega = Context.Session["FechaEstimadaEntrega"] as DateTime?;
     var CodigoRastreo = Context.Session["CodigoRastreo"] as string;
     var IdEntrega = Context.Session["IdEntrega"];
-    var FechaEntrega = Context.Session["FechaEntrega"];
+    //var FechaEntrega = Context.Session["FechaEntrega"];
     var IdRepartidor = Context.Session["IdRepartidor"];
     var Telefono = Context.Session["Telefono"] as string;
     var IdEstatus = Context.Session["IdEstatus"];
     var Estatus = Context.Session["Estatus"] as string;
     var IdUsuario = Context.Session["IdUsuario"];
-    var NombreRepartidor = Context.Session["NombreRepartidor"] as string;
+    var NombreRepartidor = Context.Session["Nombre"] as string;
     var ApellidoPaterno = Context.Session["ApellidoPaterno"] as string;
     var ApellidoMaterno = Context.Session["ApellidoMaterno"] as string;
 
@@ -69,7 +78,7 @@
 @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "navbar-form navbar" }))
 {
     <div class="form-group">
-        @Html.TextBoxFor(odel => Model.CodigoRastreo, new { @class = "form-control btn btn-dark", @placeholder = "Codigo de Rastreo" })
+        @Html.TextBoxFor(odel => Model.CodigoRastreo, new { @class = "form-control btn btn-dark", @placeholder = "Codigo de Rastreo", @required = "required" })
     </div>
     <button type="submit" class="btn btn-primary">Rastrear</button>
 }
@@ -112,36 +121,165 @@
                     <tr class="text-center">
                         <td>@NombreRepartidor @ApellidoPaterno @ApellidoMaterno</td>
                         <td>@Detalle y @Peso kg</td>
-                        <td>@DireccionOrigen</td>
-                        <td>@DireccionEntrega</td>
-                        <td>@FechaEstimadaEntrega</td>
-                        @if (Estatus == "Entregado")
+                        <td>@DireccionOrigen @Html.HiddenFor(Model => DireccionOrigen, new { @id = "txtdireccionorigen" })</td>
+                        <td>@DireccionEntrega @Html.HiddenFor(Model => DireccionEntrega, new {@id="txtdireccionentrega"})</td>
+                        @if (FechaEstimadaEntrega.HasValue)
                         {
-                            <td style="color: #07941b"><strong>@Estatus</strong></td>
-                        }
-                        else if (Estatus == "En Ruta de Entrega")
-                        {
-                            <td style="color: #029393"><strong>@Estatus</strong></td>
-                        }
-                        else if (Estatus == "En Tránsito")
-                        {
-                            <td style="color: #ffd800"><strong>@Estatus</strong></td>
+                            <td>@FechaEstimadaEntrega.Value.ToString("dd-MM-yyyy")</td>
                         }
                         else
                         {
-                            <td style="#f0ad4e"><strong>@Estatus</strong></td>
+                            <td><p>No hay fecha asignada</p></td>
                         }
 
-                        <td style="color:">@CodigoRastreo</td>
+                        @if (Estatus == "Entregado")
+                        {
+                            <td style="color: #07941b;"><strong>@Estatus</strong></td>
+                        }
+                        else if (Estatus == "En Ruta de Entrega")
+                        {
+                            <td style="color: #029393;"><strong>@Estatus</strong></td>
+                        }
+                        else if (Estatus == "En Tránsito")
+                        {
+                            <td style="color: #ffd800;"><strong>@Estatus</strong></td>
+                        }
+                        else
+                        {
+                            <td style="color: #f0ad4e;"><strong>@Estatus</strong></td>
+                        }
+
+                        <td>@CodigoRastreo</td>
                     </tr>
                 </tbody>
 
             </table>
+            <div id="map"></div>
         </div>
-    </div> }
+    </div>
+}
 else
 {
     <div class="alert alert-danger" role="alert">
-        Ingresa el código de rastreo.Error:@ViewBag.Message
+        Ingresa el código de rastreo.
     </div>
 }
+
+<script type="text/javascript">
+    //error 
+    // Initialize and add the map
+    let map;
+    let marker;
+    let infoWindow;
+
+    async function initMap() {
+        // The location of Uluru
+        const position = { lat: 19.4303622, lng: -99.1616508 };
+        // Request needed libraries.
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
+
+        // The map, centered at Uluru
+        map = new Map(document.getElementById("map"), {
+            zoom: 10,
+            center: position,
+            mapId: "DEMO_MAP_ID",
+        });
+
+        infoWindow = new google.maps.InfoWindow({
+            content: "No hay localización para este paquete",
+            position: position,
+        });
+
+        infoWindow.open(map)
+        
+    }
+    initMap();
+</script>
+<script>
+    window.addEventListener("load", function () {
+        var direccionentrega = $("#txtdireccionentrega").val();
+        var direccionorigen = $("#txtdireccionorigen").val();
+        if (direccionorigen !== "" && direccionentrega !== "") {
+            localizar("map", direccionorigen);
+            localizarEntrega("map", direccionentrega);
+        }
+    });
+
+    function localizar(elemento, direccionorigen) {
+
+        var geocoder = new google.maps.Geocoder();
+        var marker;
+        var map = new google.maps.Map(document.getElementById(elemento), {
+            zoom: 11,
+            scrollwheel: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+       
+        geocoder.geocode({ 'address': direccionorigen }, function (results, status) {
+            if (status === 'OK') {
+                var resultados = results[0].geometry.location,
+                    resultados_lat = resultados.lat(),
+                    resultados_long = resultados.lng();
+
+                map.setCenter(results[0].geometry.location);
+                if (marker) {
+                    marker.setPosition(results[0].geometry.location);
+                } else {
+                    marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                }
+            } //else {
+            //    var mensajeError = "";
+            //    if (status === "ZERO_RESULTS") {
+            //        mensajeError = "No hubo resultados para la dirección ingresada.";
+            //    } else if (status === "OVER_QUERY_LIMIT" || status === "REQUEST_DENIED" || status === "UNKNOWN_ERROR") {
+            //        mensajeError = "Error general del mapa.";
+            //    } else if (status === "INVALID_REQUEST") {
+            //        mensajeError = "Error de la web. No hay dirección encontrada.";
+            //    }
+            //    alert(mensajeError);
+            //}
+        });
+    }
+    function localizarEntrega(elemento, direccionentrega) {
+
+        var geocoder = new google.maps.Geocoder();
+        var marker;
+        var map = new google.maps.Map(document.getElementById(elemento), {
+            zoom: 11,
+            scrollwheel: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        geocoder.geocode({ 'address': direccionentrega }, function (results, status) {
+            if (status === 'OK') {
+                var resultados = results[0].geometry.location,
+                    resultados_lat = resultados.lat(),
+                    resultados_long = resultados.lng();
+
+                map.setCenter(results[0].geometry.location);
+                if (marker) {
+                    marker.setPosition(results[0].geometry.location);
+                } else {
+                    marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                }
+            } //else {
+            //    var mensajeError = "";
+            //    if (status === "ZERO_RESULTS") {
+            //        mensajeError = "No hubo resultados para la dirección ingresada.";
+            //    } else if (status === "OVER_QUERY_LIMIT" || status === "REQUEST_DENIED" || status === "UNKNOWN_ERROR") {
+            //        mensajeError = "Error general del mapa.";
+            //    } else if (status === "INVALID_REQUEST") {
+            //        mensajeError = "Error de la web. No hay dirección encontrada.";
+            //    }
+            //    alert(mensajeError);
+            //}
+        });
+    }
+</script>

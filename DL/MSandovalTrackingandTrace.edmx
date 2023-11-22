@@ -39,7 +39,7 @@
           <Property Name="DireccionOrigen" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="DireccionEntrega" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="FechaEstimadaEntrega" Type="date" />
-          <Property Name="CodigoRastreo" Type="varchar" MaxLength="100" />
+          <Property Name="CodigoRastreo" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Repartidor">
           <Key>
@@ -169,6 +169,12 @@
         </Association>
         <Function Name="EntregaGetByCodigoRastreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CodigoRastreo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="PaqueteAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Detalle" Type="varchar" Mode="In" />
+          <Parameter Name="Peso" Type="float" Mode="In" />
+          <Parameter Name="DireccionOrigen" Type="varchar" Mode="In" />
+          <Parameter Name="DireccionEntrega" Type="varchar" Mode="In" />
         </Function>
         <Function Name="RepartidorGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="RolGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -322,7 +328,13 @@
             <End Role="Usuario" EntitySet="Usuarios" />
           </AssociationSet>
           <FunctionImport Name="EntregaGetByCodigoRastreo" ReturnType="Collection(MSandovalTrackingandTraceModel.EntregaGetByCodigoRastreo_Result)">
-            <Parameter Name="CodigoRastreo" Mode="In" Type="String" />
+          <Parameter Name="CodigoRastreo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PaqueteAdd">
+            <Parameter Name="Detalle" Mode="In" Type="String" />
+            <Parameter Name="Peso" Mode="In" Type="Double" />
+            <Parameter Name="DireccionOrigen" Mode="In" Type="String" />
+            <Parameter Name="DireccionEntrega" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="UsuarioGetAll_Result">
@@ -386,7 +398,7 @@
           <Property Name="DireccionOrigen" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="DireccionEntrega" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="FechaEstimadaEntrega" Type="DateTime" Precision="0" />
-          <Property Name="CodigoRastreo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CodigoRastreo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Entregas" Relationship="MSandovalTrackingandTraceModel.FK__Entrega__IdPaque__25869641" FromRole="Paquete" ToRole="Entrega" />
         </EntityType>
         <EntityType Name="UnidadEntrega">
@@ -756,6 +768,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PaqueteAdd" FunctionName="MSandovalTrackingandTraceModel.Store.PaqueteAdd" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

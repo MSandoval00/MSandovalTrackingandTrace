@@ -314,7 +314,7 @@ a.buttonText {
                 @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class= "navbar-form navbar" }))
                 {
                     <div class="form-group">
-                        @Html.TextBoxFor(model=>Model.CodigoRastreo, new {@class="form-control", @placeholder="Codigo de Rastreo"})
+                        @Html.TextBoxFor(model=>Model.CodigoRastreo, new {@class="form-control", @placeholder="Codigo de Rastreo", @required="required"})
                     </div>
                     <br />
                     <br />

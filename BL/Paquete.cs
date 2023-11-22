@@ -46,7 +46,7 @@ namespace BL
 
                         //Entrega
                         paquete.Entrega.IdEntrega = query.IdEntrega;
-                        paquete.Entrega.FechaEntrega = DateTime.Parse(query.FechaEntrega.ToString());
+                        //paquete.Entrega.FechaEntrega = DateTime.Parse(query.FechaEntrega.ToString());
 
                         //Repartidor
                         paquete.Repartidor.IdRepartidor = query.IdRepartidor;
@@ -80,22 +80,24 @@ namespace BL
             {
                 using (DL.MSandovalTrackingandTraceEntities context=new DL.MSandovalTrackingandTraceEntities())
                 {
-                    DL.Paquete nuevoPaquete = new DL.Paquete();
-                    nuevoPaquete.Detalle = paquete.Detalle;
-                    nuevoPaquete.Peso=paquete.Peso;
-                    nuevoPaquete.DireccionOrigen=paquete.DireccionOrigen;
-                    nuevoPaquete.DireccionEntrega = paquete.DireccionEntrega;
-                    //nuevoPaquete.FechaEstimadaEntrega = paquete.FechaEstimadaEntrega;
-                    //nuevoPaquete.CodigoRastreo=paquete.CodigoRastreo;
-                    context.Paquetes.Add(nuevoPaquete);
-                    context.SaveChanges();
+                    var query = context.PaqueteAdd(paquete.Detalle,
+                        paquete.Peso,
+                        paquete.DireccionOrigen,
+                        paquete.DireccionEntrega);
+                    if (query>0)
+                    {
+                        Correct = true;
+                    }
+                    else
+                    {
+                        Correct = false;
+                        Console.WriteLine("El paquete no fue agregado");
+                    }
                 }
-                Correct = true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Correct = false;
             }
             return Correct;
         }

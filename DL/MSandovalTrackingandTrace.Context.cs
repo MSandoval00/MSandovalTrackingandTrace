@@ -161,5 +161,26 @@ namespace DL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<EntregaGetByCodigoRastreo_Result>("EntregaGetByCodigoRastreo", codigoRastreoParameter);
         }
+    
+        public virtual int PaqueteAdd(string detalle, Nullable<double> peso, string direccionOrigen, string direccionEntrega)
+        {
+            var detalleParameter = detalle != null ?
+                new ObjectParameter("Detalle", detalle) :
+                new ObjectParameter("Detalle", typeof(string));
+    
+            var pesoParameter = peso.HasValue ?
+                new ObjectParameter("Peso", peso) :
+                new ObjectParameter("Peso", typeof(double));
+    
+            var direccionOrigenParameter = direccionOrigen != null ?
+                new ObjectParameter("DireccionOrigen", direccionOrigen) :
+                new ObjectParameter("DireccionOrigen", typeof(string));
+    
+            var direccionEntregaParameter = direccionEntrega != null ?
+                new ObjectParameter("DireccionEntrega", direccionEntrega) :
+                new ObjectParameter("DireccionEntrega", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PaqueteAdd", detalleParameter, pesoParameter, direccionOrigenParameter, direccionEntregaParameter);
+        }
     }
 }
