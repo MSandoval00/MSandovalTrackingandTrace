@@ -15,6 +15,7 @@ namespace BL
         public string DireccionEntrega { get; set; }
         public DateTime FechaEstimadaEntrega { get; set; }
         public string CodigoRastreo { get; set; }
+       
         public BL.Entrega Entrega { get; set; }
         public BL.Repartidor Repartidor { get; set; }
         public BL.EstatusEntrega EstatusEntrega { get; set; }

@@ -220,6 +220,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Paquete\cards-paquete.css" />
     <Content Include="Content\Repartidor\Card-Repartidor.css" />
+    <Content Include="Content\Template\Email.html" />
     <Content Include="Content\Usuario\Usuario.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
