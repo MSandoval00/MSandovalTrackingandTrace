@@ -3,6 +3,9 @@
     ViewBag.Title = "Cards";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{ 
+   var rol = Context.Session["Rol"] as string;
+}
 <link rel="stylesheet" type="text/css" href="~/Content/Paquete/cards-paquete.css">
 
 <h2 style="color:aliceblue; text-align:center">Elige que deseas realizar</h2>

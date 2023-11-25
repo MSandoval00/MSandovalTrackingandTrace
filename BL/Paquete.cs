@@ -15,7 +15,8 @@ namespace BL
         public string DireccionEntrega { get; set; }
         public DateTime FechaEstimadaEntrega { get; set; }
         public string CodigoRastreo { get; set; }
-       
+        public List<object> Paquetes { get; set; }
+
         public BL.Entrega Entrega { get; set; }
         public BL.Repartidor Repartidor { get; set; }
         public BL.EstatusEntrega EstatusEntrega { get; set; }
@@ -101,6 +102,93 @@ namespace BL
                 Console.WriteLine(ex.Message);
             }
             return Correct;
+        }
+        public static List<object> GetAll(Usuario usuario, EstatusEntrega estatusEntrega)
+        {
+            List<object> listPaquetes=new List<object> ();
+            try
+            {
+                using (DL.MSandovalTrackingandTraceEntities context=new DL.MSandovalTrackingandTraceEntities())
+                {
+                    var query = (from tablaPaquete in context.Paquetes
+                                 join tablaEntrega in context.Entregas
+                                 on tablaPaquete.IdPaquete equals tablaEntrega.IdPaquete//Paquete
+                                 join tablaRepartidor in context.Repartidors
+                                 on tablaEntrega.IdRepartidor equals tablaRepartidor.IdRepartidor//Repartidor
+                                 join tablaEstatusEntrega in context.EstatusEntregas
+                                 on tablaEntrega.IdEstatusEntrega equals tablaEstatusEntrega.IdEstatus//EstatusEntrega
+                                 join tablaUsuario in context.Usuarios
+                                 on tablaRepartidor.IdUsuario equals tablaUsuario.IdUsuario//Usuario
+                                 join tablaUnidadEntrega in context.UnidadEntregas
+                                 on tablaRepartidor.IdUnidadAsignada equals tablaUnidadEntrega.IdUnidad//UnidadEntrega
+                                where tablaUsuario.Nombre.Contains(usuario.Nombre) || tablaEstatusEntrega.Estatus.Contains(estatusEntrega.Estatus)
+                                 select new
+                                 {
+                                     //Paquete
+                                     IdPaquete=tablaPaquete.IdPaquete,
+                                     DireccionOrigen=tablaPaquete.DireccionOrigen,
+                                     DireccionEntrega=tablaPaquete.DireccionEntrega,
+                                     FechaEstimadaEntrega=tablaPaquete.FechaEstimadaEntrega,
+                                     
+                                     //Repartidor
+                                     IdRepartidor=tablaRepartidor.IdRepartidor,
+
+                                     //EstatusEntrega 
+                                     Estatus=tablaEstatusEntrega.Estatus,
+                                     
+                                     //Usuario
+                                     Nombre=tablaUsuario.Nombre,
+                                     ApellidoPaterno=tablaUsuario.ApellidoPaterno,
+                                     ApellidoMaterno=tablaUsuario.ApellidoMaterno,
+
+                                     //UnidadEntrega
+                                     IdUnidad=tablaUnidadEntrega.IdUnidad,
+                                     NumeroPlaca=tablaUnidadEntrega.NumeroPlaca,
+                                 });
+                    listPaquetes = new List<object>();
+                    if (query!=null &&query.Count()>0)
+                    {
+                        foreach (var datos in query)
+                        {
+                            Paquete paquete = new Paquete();
+                            paquete.Repartidor = new Repartidor();
+                            paquete.Usuario=new Usuario();
+                            paquete.EstatusEntrega=new EstatusEntrega();
+                            paquete.Repartidor.UnidadEntrega = new UnidadEntrega();
+
+                            paquete.IdPaquete=datos.IdPaquete;
+                            paquete.DireccionOrigen=datos.DireccionOrigen;
+                            paquete.DireccionEntrega = datos.DireccionEntrega;
+                            paquete.FechaEstimadaEntrega = DateTime.Parse(datos.FechaEstimadaEntrega.ToString());
+
+                            //Repartidor
+                            paquete.Repartidor.IdRepartidor=datos.IdRepartidor;
+
+                            //EstatusEntrega
+                            paquete.EstatusEntrega.Estatus = datos.Estatus;
+
+                            //Usuario
+                            paquete.Usuario.Nombre = datos.Nombre;
+                            paquete.Usuario.ApellidoPaterno = datos.ApellidoPaterno;
+                            paquete.Usuario.ApellidoMaterno = datos.ApellidoMaterno;
+                            
+                            //UnidadEntrega
+                            paquete.Repartidor.UnidadEntrega.IdUnidad=datos.IdUnidad;
+                            paquete.Repartidor.UnidadEntrega.NumeroPlaca = datos.NumeroPlaca;
+                            listPaquetes.Add(paquete);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se encontraron registros del paquete");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return listPaquetes;
         }
     }
 }

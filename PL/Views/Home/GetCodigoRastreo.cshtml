@@ -197,12 +197,16 @@ else
     initMap();
 </script>
 <script>
+    //window.addEventListener("load", function () {
+    //    var direccionentrega = $("#txtdireccionentrega").val();
+    //    if (direccionentrega !== "") {
+    //        localizarEntrega("map", direccionentrega);//Muestra la de entrega
+    //    }
+    //});
     window.addEventListener("load", function () {
-        var direccionentrega = $("#txtdireccionentrega").val();
         var direccionorigen = $("#txtdireccionorigen").val();
-        if (direccionorigen !== "" && direccionentrega !== "") {
+        if (direccionorigen!=="") {
             localizar("map", direccionorigen);
-            localizarEntrega("map", direccionentrega);
         }
     });
 
@@ -244,42 +248,42 @@ else
             //}
         });
     }
-    function localizarEntrega(elemento, direccionentrega) {
+    //function localizarEntrega(elemento, direccionentrega) {
 
-        var geocoder = new google.maps.Geocoder();
-        var marker;
-        var map = new google.maps.Map(document.getElementById(elemento), {
-            zoom: 11,
-            scrollwheel: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
+    //    var geocoder = new google.maps.Geocoder();
+    //    var marker;
+    //    var map = new google.maps.Map(document.getElementById(elemento), {
+    //        zoom: 11,
+    //        scrollwheel: true,
+    //        mapTypeId: google.maps.MapTypeId.ROADMAP
+    //    });
 
-        geocoder.geocode({ 'address': direccionentrega }, function (results, status) {
-            if (status === 'OK') {
-                var resultados = results[0].geometry.location,
-                    resultados_lat = resultados.lat(),
-                    resultados_long = resultados.lng();
+    //    geocoder.geocode({ 'address': direccionentrega }, function (results, status) {
+    //        if (status === 'OK') {
+    //            var resultados = results[0].geometry.location,
+    //                resultados_lat = resultados.lat(),
+    //                resultados_long = resultados.lng();
 
-                map.setCenter(results[0].geometry.location);
-                if (marker) {
-                    marker.setPosition(results[0].geometry.location);
-                } else {
-                    marker = new google.maps.Marker({
-                        map: map,
-                        position: results[0].geometry.location
-                    });
-                }
-            } //else {
-            //    var mensajeError = "";
-            //    if (status === "ZERO_RESULTS") {
-            //        mensajeError = "No hubo resultados para la dirección ingresada.";
-            //    } else if (status === "OVER_QUERY_LIMIT" || status === "REQUEST_DENIED" || status === "UNKNOWN_ERROR") {
-            //        mensajeError = "Error general del mapa.";
-            //    } else if (status === "INVALID_REQUEST") {
-            //        mensajeError = "Error de la web. No hay dirección encontrada.";
-            //    }
-            //    alert(mensajeError);
-            //}
-        });
-    }
+    //            map.setCenter(results[0].geometry.location);
+    //            if (marker) {
+    //                marker.setPosition(results[0].geometry.location);
+    //            } else {
+    //                marker = new google.maps.Marker({
+    //                    map: map,
+    //                    position: results[0].geometry.location
+    //                });
+    //            }
+    //        } //else {
+    //        //    var mensajeError = "";
+    //        //    if (status === "ZERO_RESULTS") {
+    //        //        mensajeError = "No hubo resultados para la dirección ingresada.";
+    //        //    } else if (status === "OVER_QUERY_LIMIT" || status === "REQUEST_DENIED" || status === "UNKNOWN_ERROR") {
+    //        //        mensajeError = "Error general del mapa.";
+    //        //    } else if (status === "INVALID_REQUEST") {
+    //        //        mensajeError = "Error de la web. No hay dirección encontrada.";
+    //        //    }
+    //        //    alert(mensajeError);
+    //        //}
+    //    });
+    //}
 </script>

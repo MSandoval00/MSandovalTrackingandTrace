@@ -182,5 +182,10 @@ namespace DL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PaqueteAdd", detalleParameter, pesoParameter, direccionOrigenParameter, direccionEntregaParameter);
         }
+    
+        public virtual ObjectResult<EstatusEntregaGetAll_Result> EstatusEntregaGetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<EstatusEntregaGetAll_Result>("EstatusEntregaGetAll");
+        }
     }
 }

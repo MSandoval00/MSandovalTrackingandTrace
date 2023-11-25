@@ -170,6 +170,7 @@
         <Function Name="EntregaGetByCodigoRastreo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CodigoRastreo" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="EstatusEntregaGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="PaqueteAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Detalle" Type="varchar" Mode="In" />
           <Parameter Name="Peso" Type="float" Mode="In" />
@@ -336,6 +337,7 @@
             <Parameter Name="DireccionOrigen" Mode="In" Type="String" />
             <Parameter Name="DireccionEntrega" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="EstatusEntregaGetAll" ReturnType="Collection(MSandovalTrackingandTraceModel.EstatusEntregaGetAll_Result)" />
         </EntityContainer>
         <ComplexType Name="UsuarioGetAll_Result">
           <Property Type="Int32" Name="IdUsuario" Nullable="false" />
@@ -575,6 +577,10 @@
           <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <ComplexType Name="EstatusEntregaGetAll_Result">
+          <Property Type="Int32" Name="IdEstatus" Nullable="false" />
+          <Property Type="String" Name="Estatus" Nullable="false" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -769,6 +775,14 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="PaqueteAdd" FunctionName="MSandovalTrackingandTraceModel.Store.PaqueteAdd" />
+          <FunctionImportMapping FunctionImportName="EstatusEntregaGetAll" FunctionName="MSandovalTrackingandTraceModel.Store.EstatusEntregaGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSandovalTrackingandTraceModel.EstatusEntregaGetAll_Result">
+                <ScalarProperty Name="IdEstatus" ColumnName="IdEstatus" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

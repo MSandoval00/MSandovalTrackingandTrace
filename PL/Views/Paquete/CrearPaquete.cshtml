@@ -14,84 +14,207 @@
         key: "AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw",
     });
 </script>
+@Scripts.Render("~/bundles/jquery")
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
-
-<h2>Registrar paquete</h2>
-<hr />
-<div class="container">
-    <form action="@Url.Action("CrearPaquete","Paquete")" method="post">
+@{
+    var rol = Context.Session["Rol"] as string;
+}
+@if (rol == "Administrador")
+{
+    <h2>Registro de todos los paquetes</h2>
+    <div class="container">
         <div class="row">
-            @Html.HiddenFor(model => Model.IdPaquete)
-            <div class="col-md-3">
-                @Html.LabelFor(Model => Model.Detalle)
-                @Html.TextBoxFor(Model => Model.Detalle, new { @class = "form-control" })
-            </div>
-            <div class="col-md-3">
-                @Html.LabelFor(Model => Model.Peso)
-                @Html.TextBoxFor(Model => Model.Peso, new { @class = "form-control" })
-            </div>
-            <div class="col-md-3">
-                <label>Email:</label>
-                <input type="text" class="form-control" name="email" placeholder="Email" aria-describedby="basic-addon2">
-            </div>
-            <br />
-            <div class="col-md-3">
-                <input type="submit" class="btn btn-success" name="name" value="Registrar paquete" />
-                @Html.ActionLink("Cancelar", "Cards", "Paquete", new { @class = "btn btn-danger" })
+            <h2>Buscar por nombre o Estatus</h2>
+            @using (Html.BeginForm("CrearPaquete", "Paquete", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="col-md-3">
+                    @Html.LabelFor(Model => Model.Repartidor.Usuario.Nombre)
+                    @Html.TextBoxFor(Model => Model.Repartidor.Usuario.Nombre, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(Model => Model.EstatusEntrega.IdEstatus)
+                    @Html.DropDownListFor(model => Model.EstatusEntrega.IdEstatus, new SelectList(Model.EstatusEntrega.EstatusEntregas, "IdEstatus", "Estatus"), "Selecciona estatus a buscar", new { @class = "form-control btn btn-primary dropdown-toggle" })
+                </div>
+                <br />
+                <button class="btn btn-info"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            }
+
+        </div>
+    </div>
+    <hr />
+    if (Model.Paquetes.Count > 0)
+    {
+        <div class="container">
+            <div class="row">
+                <table class="table table-hover table-condensed" id="tablaPaquete">
+                    <thead style="background:#3d3c3c; color:#ffffff; text-align:center">
+                        <tr>
+                            <th class="text-center">Actualizar</th>
+                            <th class="text-center">IdPaquete</th>
+                            <th class="text-center">Destino</th>
+                            <th class="text-center">Origen</th>
+                            <th class="text-center">Estatus</th>
+                            <th class="text-center">Repartidor</th>
+                            <th class="text-center">Unidad repartidor</th>
+                            <th class="text-center">Fecha Estimada Entrega</th>
+                            <th class="text-center">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background:#c8c5c5; color:#3d3c3c;">
+                        @foreach (BL.Paquete paquete in Model.Paquetes)
+                        {
+                            <tr class="text-center">
+                                <td><a href="@Url.Action("Form", "Paquete", new {IdPaquete=paquete.IdPaquete})" class="btn btn-warning"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+                                <td>@paquete.IdPaquete</td>
+                                <td>@paquete.DireccionEntrega</td>
+                                <td>@paquete.DireccionOrigen</td>
+                                @if (paquete.EstatusEntrega.Estatus == "Entregado")
+                                {
+                                    <td style="color: #07941b;"><strong>@paquete.EstatusEntrega.Estatus</strong></td>
+                                }
+                                else if (paquete.EstatusEntrega.Estatus == "En Ruta de Entrega")
+                                {
+                                    <td style="color: #029393;"><strong>@paquete.EstatusEntrega.Estatus</strong></td>
+                                }
+                                else if (paquete.EstatusEntrega.Estatus == "En Tránsito")
+                                {
+                                    <td style="color: #ffd800;"><strong>@paquete.EstatusEntrega.Estatus</strong></td>
+                                }
+                                else
+                                {
+                                    <td style="color: #f0ad4e;"><strong>@paquete.EstatusEntrega.Estatus</strong></td>
+                                }
+
+                                <td>@paquete.Usuario.Nombre @paquete.Usuario.ApellidoPaterno @paquete.Usuario.ApellidoMaterno</td>
+                                <td>@paquete.Repartidor.UnidadEntrega.NumeroPlaca</td>
+                                <td>@paquete.FechaEstimadaEntrega</td>
+                                <td><a class="btn btn-danger" href="@Url.Action("Delete", "Paquete", new {IdPaquete=paquete.IdPaquete})"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
             </div>
         </div>
-        <br />
-        <div class="row">
-            <div class="col-md-8">
-                @Html.LabelFor(Model => Model.DireccionOrigen)
-                @Html.TextBoxFor(Model => Model.DireccionOrigen, new { @class = "form-control", @id = "txtdireccionorigen", @readonly = "readonly" })
+
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            No hay registros de paquetes.
+        </div>
+    }
+
+}
+else
+{
+    <h2>Registrar paquete</h2>
+    <hr />
+    <div class="container">
+        <form action="@Url.Action("CrearPaquete","Paquete")" method="post">
+            <div class="row">
+                @Html.HiddenFor(model => Model.IdPaquete)
+                <div class="col-md-3">
+                    @Html.LabelFor(Model => Model.Detalle)
+                    @Html.TextBoxFor(Model => Model.Detalle, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(Model => Model.Peso)
+                    @Html.TextBoxFor(Model => Model.Peso, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    <label>Email:</label>
+                    <input type="text" class="form-control" name="email" placeholder="Email" aria-describedby="basic-addon2">
+                </div>
+                <br />
+                <div class="col-md-3">
+                    <input type="submit" class="btn btn-success" name="name" value="Registrar paquete" />
+                    @Html.ActionLink("Cancelar", "Cards", "Paquete", new { @class = "btn btn-danger" })
+                </div>
             </div>
             <br />
-            <div class="col-md-4">
-                <input type="button" onclick="limpiarOrigen();" class="btn btn-info" value="Limpiar campo Origen" />
+            <div class="row">
+                <div class="col-md-8">
+                    @Html.LabelFor(Model => Model.DireccionOrigen)
+                    @Html.TextBoxFor(Model => Model.DireccionOrigen, new { @class = "form-control", @id = "txtdireccionorigen", @readonly = "readonly" })
+                </div>
+                <br />
+                <div class="col-md-4">
+                    <input type="button" onclick="limpiarOrigen();" class="btn btn-info" value="Limpiar campo Origen" />
+                </div>
             </div>
-        </div>
 
 
-        <div class="row">
-            <div class="col-md-8">
-                @Html.LabelFor(Model => Model.DireccionEntrega)
-                @Html.TextBoxFor(Model => Model.DireccionEntrega, new { @class = "form-control", @id = "txtdireccionentrega", @readonly = "readonly" })
+            <div class="row">
+                <div class="col-md-8">
+                    @Html.LabelFor(Model => Model.DireccionEntrega)
+                    @Html.TextBoxFor(Model => Model.DireccionEntrega, new { @class = "form-control", @id = "txtdireccionentrega", @readonly = "readonly" })
+                </div>
+                <br />
+                <div class="col-md-4">
+                    <input type="button" onclick="limpiarEntrega();" class="btn btn-primary" value="Limpiar campo Entrega" />
+                </div>
             </div>
-            <br />
-            <div class="col-md-4">
-                <input type="button" onclick="limpiarEntrega();" class="btn btn-primary" value="Limpiar campo Entrega" />
+
+            <hr />
+            <div id="contenido">
+                <h2 class="text-center" id="textoorigen">Selecciona Dirección Origen</h2>
+                <h2 class="text-center" id="textoentrega" style="display:none;">Selecciona Dirección Entrega</h2>
             </div>
-        </div>
 
-        <hr />
-        <div id="contenido"><h2 class="text-center" id="texto">Selecciona Dirección Origen</h2></div>
+            <div id="map" onclick="validar();"></div>
+        </form>
+    </div>
+}
 
-        <div id="map" onclick="validar();"></div>
-    </form>
-</div>
 <script type="text/javascript">
+    //Inicio tabla
+    let table = new DataTable('#tablaPaquete', {
+        reponsive: true,
+        "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "Todos"]],
+        searching: false,
+        language: {
+            url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+        },
+    });
+    //fin tabla
     function validar() {
         if ($("#txtdireccionorigen").val().length == 0) {
-            var textoEntrega = "<h2 class='text-center' id='textoentrega'>Selecciona Dirección Entrega</h2>";
-            $('#contenido').append(textoEntrega);
-            $('#texto').hide();
+            $('#textoorigen').hide();
+            $('#textoentrega').show();
             return false;
-        } else{
+        } else if ($("#txtdireccionentrega").val().length == 0) {
+            $('#textoentrega').show();
+            $('#textoorigen').hide()
             return false;
+        } else {
+            return true;
         }
     }
-    function limpiarOrigen(){
-        document.getElementById("txtdireccionorigen").value = "";        
-        $("#texto").show();
+
+    function limpiarOrigen() {
+        document.getElementById("txtdireccionorigen").value = "";
+        $("#textoorigen").show();
         $("#textoentrega").hide();
-        
-        //marca de nuevo el marker no lo quita y no muestra el h2 original
+        if (markerOrigen) {
+            markerOrigen.setMap(null);
+            markerOrigen = undefined;
+        }
+        return false;
     }
+
     function limpiarEntrega() {
         document.getElementById("txtdireccionentrega").value = "";
-        $("#texto").show();
-        $("#textoentrega").hide();
+        $("#textoorigen").hide();
+        $("#textoentrega").show();
+        if (markerEntrega) {
+            markerEntrega.setMap(null);
+            markerEntrega = undefined;
+        }
+        return false;
     }
     // Initialize and add the map
     let map;
@@ -123,10 +246,12 @@
 
         google.maps.event.addListener(map, 'click', function (event) {
             let imageOrigen = {
-                url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/info-i_maps.png",
+                url: "https://cdn-icons-png.flaticon.com/512/3654/3654746.png",
+                scaledSize: new google.maps.Size(30, 30),
             };
             let imagenDestino = {
-                url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png",
+                url: "https://i.pinimg.com/originals/d8/40/5d/d8405d8f17bed7814e6ac38b42f2c170.png",
+                scaledSize: new google.maps.Size(30, 30),
             };
             if (markerOrigen == undefined) {
                 input = $("#txtdireccionorigen");
@@ -141,7 +266,7 @@
                 markerEntrega = new google.maps.Marker({
                     map: map,
                     position: event.latLng,
-                    icon:imagenDestino,
+                    icon: imagenDestino,
                 });
                 marker = markerEntrega;
             } else {
@@ -155,8 +280,6 @@
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
                         input.val(results[0].formatted_address);
-
-                        //$("#txtdireccionorigen").val(results[0].formatted_address);
                         infoWindow.close(map);
                     }
                 }
@@ -165,5 +288,3 @@
     }
     initMap();
 </script>
-
-
