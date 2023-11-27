@@ -22,12 +22,12 @@ namespace PL.Controllers
         [HttpGet]
         public ActionResult CrearPaquete()
         {
-            BL.Usuario usuario=new BL.Usuario();
-            usuario.Nombre = "";
-            BL.EstatusEntrega estatusEntrega=new BL.EstatusEntrega();
-            estatusEntrega.Estatus = "";
+            //BL.Usuario usuario=new BL.Usuario();
+            //usuario.Nombre = "";
+            //BL.EstatusEntrega estatusEntrega=new BL.EstatusEntrega();
+            //estatusEntrega.IdEstatus = 0;
 
-            List<object> resultPaquetes = BL.Paquete.GetAll(usuario,estatusEntrega);//usuario estatusentrega
+            List<object> resultPaquetes = BL.Paquete.GetAllSin();//usuario estatusentrega
             List<object> resultEstatusEntrega = BL.EstatusEntrega.GetAll();
 
             BL.Paquete paquete=new BL.Paquete();
@@ -40,9 +40,6 @@ namespace PL.Controllers
             {
                 paquete.Paquetes=resultPaquetes;
                 paquete.EstatusEntrega.EstatusEntregas = resultEstatusEntrega;
-                //usuario
-                paquete.Usuario.Nombre=usuario.Nombre;
-                paquete.EstatusEntrega.Estatus = estatusEntrega.Estatus;
             }
             else
             {
@@ -53,23 +50,68 @@ namespace PL.Controllers
 
 
         [HttpPost]
-        public ActionResult CrearPaquete(BL.Paquete paquete, string email,BL.Usuario usuario,BL.EstatusEntrega estatusEntrega)
+        public ActionResult CrearPaquete(BL.Paquete paquete, string email,BL.EstatusEntrega estatusEntrega, BL.Usuario usuario)
         {
-            if (paquete!=null && email!=null)
+            //paquete.Repartidor = new BL.Repartidor();
+            if (paquete.Repartidor.Usuario.Nombre!=null || estatusEntrega.IdEstatus!=0)
             {
-                if (usuario.Nombre==null)
+                if (paquete.Repartidor.Usuario.Nombre==null)
                 {
-                    usuario.Nombre = "";
+                    paquete.Repartidor.Usuario.Nombre = "";
                 }
-                if (estatusEntrega.Estatus==null)
+                if (estatusEntrega.IdEstatus == 0)
                 {
-                    estatusEntrega.Estatus = "";
+                    estatusEntrega.IdEstatus = 0;
                 }
+                usuario.Nombre = paquete.Repartidor.Usuario.Nombre;
+                estatusEntrega.IdEstatus = paquete.EstatusEntrega.IdEstatus;
                 List<object> resultado = BL.Paquete.GetAll(usuario,estatusEntrega);
-                usuario =new  BL.Usuario();
-                usuario.Usuarios=resultado;
+                paquete.Paquetes = new List<object>();
+                paquete.Paquetes = resultado;
 
-                return View()
+                //Lista de EstatusEntrega
+                List<object> resultEstatusEntrega = BL.EstatusEntrega.GetAll();
+                paquete.EstatusEntrega = new BL.EstatusEntrega();
+                paquete.EstatusEntrega.EstatusEntregas = new List<object>();
+                if (resultEstatusEntrega!=null)
+                {
+                    paquete.EstatusEntrega.EstatusEntregas=resultEstatusEntrega;
+                }
+                else
+                {
+                    ViewBag.Message = resultEstatusEntrega.ToString();
+                }
+
+                return View(paquete);
+            }
+            else if (paquete.Repartidor.Usuario.Nombre==null && estatusEntrega.IdEstatus==0)
+            {
+                ////Vacias
+                //usuario.Nombre = "";
+                //estatusEntrega.IdEstatus=0;
+                
+                //GetAll
+                List<object> resultado = BL.Paquete.GetAllSin();
+                //Lista de EstatusEntrega
+                List<object> resultEstatusEntrega = BL.EstatusEntrega.GetAll();
+
+                paquete.Paquetes = new List<object>();
+                //instancia
+                paquete.EstatusEntrega = new BL.EstatusEntrega();
+                //paquete.Repartidor.Usuario = new BL.Usuario();
+
+                paquete.EstatusEntrega.EstatusEntregas = new List<object>();
+                if (resultado != null)
+                {
+                    paquete.Paquetes = resultado;
+                    paquete.EstatusEntrega.EstatusEntregas = resultEstatusEntrega;
+                }
+                else
+                {
+                    ViewBag.Message = resultado.ToString();
+                }
+
+                return View(paquete);
             }
             else
             {
@@ -113,6 +155,21 @@ namespace PL.Controllers
 
                 return View("Modal");
             }
+        }
+
+        public BL.Apoyo GetPaquete(BL.Apoyo apoyo)
+        {
+            var paqueteSession = Newtonsoft.Json.JsonConvert.DeserializeObject<List<object>>(HttpContext.Session.GetString("Paquete"));
+            foreach (var obj in paqueteSession)
+            {
+                BL.Paquete objPaquete=Newtonsoft.Json.JsonConvert.DeserializeObject<BL.Paquete>
+            }
+        }
+        public ActionResult GeneratePDF()
+        {
+            BL.Paquete paquete = new BL.Paquete();
+            paquete.Paquetes = new List<object>();
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -110,41 +111,44 @@ namespace BL
             {
                 using (DL.MSandovalTrackingandTraceEntities context=new DL.MSandovalTrackingandTraceEntities())
                 {
-                    var query = (from tablaPaquete in context.Paquetes
-                                 join tablaEntrega in context.Entregas
-                                 on tablaPaquete.IdPaquete equals tablaEntrega.IdPaquete//Paquete
-                                 join tablaRepartidor in context.Repartidors
-                                 on tablaEntrega.IdRepartidor equals tablaRepartidor.IdRepartidor//Repartidor
-                                 join tablaEstatusEntrega in context.EstatusEntregas
-                                 on tablaEntrega.IdEstatusEntrega equals tablaEstatusEntrega.IdEstatus//EstatusEntrega
-                                 join tablaUsuario in context.Usuarios
-                                 on tablaRepartidor.IdUsuario equals tablaUsuario.IdUsuario//Usuario
-                                 join tablaUnidadEntrega in context.UnidadEntregas
-                                 on tablaRepartidor.IdUnidadAsignada equals tablaUnidadEntrega.IdUnidad//UnidadEntrega
-                                where tablaUsuario.Nombre.Contains(usuario.Nombre) || tablaEstatusEntrega.Estatus.Contains(estatusEntrega.Estatus)
-                                 select new
-                                 {
-                                     //Paquete
-                                     IdPaquete=tablaPaquete.IdPaquete,
-                                     DireccionOrigen=tablaPaquete.DireccionOrigen,
-                                     DireccionEntrega=tablaPaquete.DireccionEntrega,
-                                     FechaEstimadaEntrega=tablaPaquete.FechaEstimadaEntrega,
-                                     
-                                     //Repartidor
-                                     IdRepartidor=tablaRepartidor.IdRepartidor,
+                    
+                        var query = (from tablaPaquete in context.Paquetes
+                                     join tablaEntrega in context.Entregas
+                                     on tablaPaquete.IdPaquete equals tablaEntrega.IdPaquete//Paquete
+                                     join tablaRepartidor in context.Repartidors
+                                     on tablaEntrega.IdRepartidor equals tablaRepartidor.IdRepartidor//Repartidor
+                                     join tablaEstatusEntrega in context.EstatusEntregas
+                                     on tablaEntrega.IdEstatusEntrega equals tablaEstatusEntrega.IdEstatus//EstatusEntrega
+                                     join tablaUsuario in context.Usuarios
+                                     on tablaRepartidor.IdUsuario equals tablaUsuario.IdUsuario//Usuario
+                                     join tablaUnidadEntrega in context.UnidadEntregas
+                                     on tablaRepartidor.IdUnidadAsignada equals tablaUnidadEntrega.IdUnidad//UnidadEntrega
+                                     where tablaUsuario.Nombre.Contains(usuario.Nombre) || tablaEstatusEntrega.IdEstatus == estatusEntrega.IdEstatus
+                                     select new
+                                     {
+                                         //Paquete
+                                         IdPaquete = tablaPaquete.IdPaquete,
+                                         DireccionOrigen = tablaPaquete.DireccionOrigen,
+                                         DireccionEntrega = tablaPaquete.DireccionEntrega,
+                                         FechaEstimadaEntrega = tablaPaquete.FechaEstimadaEntrega,
 
-                                     //EstatusEntrega 
-                                     Estatus=tablaEstatusEntrega.Estatus,
-                                     
-                                     //Usuario
-                                     Nombre=tablaUsuario.Nombre,
-                                     ApellidoPaterno=tablaUsuario.ApellidoPaterno,
-                                     ApellidoMaterno=tablaUsuario.ApellidoMaterno,
+                                         //Repartidor
+                                         IdRepartidor = tablaRepartidor.IdRepartidor,
 
-                                     //UnidadEntrega
-                                     IdUnidad=tablaUnidadEntrega.IdUnidad,
-                                     NumeroPlaca=tablaUnidadEntrega.NumeroPlaca,
-                                 });
+                                         //EstatusEntrega 
+                                         IdEstatus = tablaEstatusEntrega.IdEstatus,
+                                         Estatus = tablaEstatusEntrega.Estatus,
+
+                                         //Usuario
+                                         Nombre = tablaUsuario.Nombre,
+                                         ApellidoPaterno = tablaUsuario.ApellidoPaterno,
+                                         ApellidoMaterno = tablaUsuario.ApellidoMaterno,
+
+                                         //UnidadEntrega
+                                         IdUnidad = tablaUnidadEntrega.IdUnidad,
+                                         NumeroPlaca = tablaUnidadEntrega.NumeroPlaca,
+                                     });
+                    
                     listPaquetes = new List<object>();
                     if (query!=null &&query.Count()>0)
                     {
@@ -165,6 +169,7 @@ namespace BL
                             paquete.Repartidor.IdRepartidor=datos.IdRepartidor;
 
                             //EstatusEntrega
+                            paquete.EstatusEntrega.IdEstatus = datos.IdEstatus;
                             paquete.EstatusEntrega.Estatus = datos.Estatus;
 
                             //Usuario
@@ -189,6 +194,95 @@ namespace BL
                 Console.WriteLine(ex.Message);
             }
             return listPaquetes;
+        }
+        public static List<object> GetAllSin()
+        {
+            List<object> listPaquetes = new List<object>();
+            try
+            {
+                using (DL.MSandovalTrackingandTraceEntities context = new DL.MSandovalTrackingandTraceEntities())
+                {
+                    var query = (from tablaPaquete in context.Paquetes
+                                 join tablaEntrega in context.Entregas
+                                 on tablaPaquete.IdPaquete equals tablaEntrega.IdPaquete//Paquete
+                                 join tablaRepartidor in context.Repartidors
+                                 on tablaEntrega.IdRepartidor equals tablaRepartidor.IdRepartidor//Repartidor
+                                 join tablaEstatusEntrega in context.EstatusEntregas
+                                 on tablaEntrega.IdEstatusEntrega equals tablaEstatusEntrega.IdEstatus//EstatusEntrega
+                                 join tablaUsuario in context.Usuarios
+                                 on tablaRepartidor.IdUsuario equals tablaUsuario.IdUsuario//Usuario
+                                 join tablaUnidadEntrega in context.UnidadEntregas
+                                 on tablaRepartidor.IdUnidadAsignada equals tablaUnidadEntrega.IdUnidad//UnidadEntrega
+                                 select new
+                                 {
+                                     //Paquete
+                                     IdPaquete = tablaPaquete.IdPaquete,
+                                     DireccionOrigen = tablaPaquete.DireccionOrigen,
+                                     DireccionEntrega = tablaPaquete.DireccionEntrega,
+                                     FechaEstimadaEntrega = tablaPaquete.FechaEstimadaEntrega,
+
+                                     //Repartidor
+                                     IdRepartidor = tablaRepartidor.IdRepartidor,
+
+                                     //EstatusEntrega 
+                                     IdEstatus=tablaEstatusEntrega.IdEstatus,
+                                     Estatus = tablaEstatusEntrega.Estatus,
+
+                                     //Usuario
+                                     Nombre = tablaUsuario.Nombre,
+                                     ApellidoPaterno = tablaUsuario.ApellidoPaterno,
+                                     ApellidoMaterno = tablaUsuario.ApellidoMaterno,
+
+                                     //UnidadEntrega
+                                     IdUnidad = tablaUnidadEntrega.IdUnidad,
+                                     NumeroPlaca = tablaUnidadEntrega.NumeroPlaca,
+                                 });
+                    listPaquetes = new List<object>();
+                    if (query != null && query.Count() > 0)
+                    {
+                        foreach (var datos in query)
+                        {
+                            Paquete paquete = new Paquete();
+                            paquete.Repartidor = new Repartidor();
+                            paquete.Usuario = new Usuario();
+                            paquete.EstatusEntrega = new EstatusEntrega();
+                            paquete.Repartidor.UnidadEntrega = new UnidadEntrega();
+
+                            paquete.IdPaquete = datos.IdPaquete;
+                            paquete.DireccionOrigen = datos.DireccionOrigen;
+                            paquete.DireccionEntrega = datos.DireccionEntrega;
+                            paquete.FechaEstimadaEntrega = DateTime.Parse(datos.FechaEstimadaEntrega.ToString());
+
+                            //Repartidor
+                            paquete.Repartidor.IdRepartidor = datos.IdRepartidor;
+
+                            //EstatusEntrega
+                            paquete.EstatusEntrega.IdEstatus = datos.IdEstatus;
+                            paquete.EstatusEntrega.Estatus = datos.Estatus;
+
+                            //Usuario
+                            paquete.Usuario.Nombre = datos.Nombre;
+                            paquete.Usuario.ApellidoPaterno = datos.ApellidoPaterno;
+                            paquete.Usuario.ApellidoMaterno = datos.ApellidoMaterno;
+
+                            //UnidadEntrega
+                            paquete.Repartidor.UnidadEntrega.IdUnidad = datos.IdUnidad;
+                            paquete.Repartidor.UnidadEntrega.NumeroPlaca = datos.NumeroPlaca;
+                            listPaquetes.Add(paquete);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se encontraron registros del paquete");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return listPaquetes;
+
         }
     }
 }
