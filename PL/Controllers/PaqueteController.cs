@@ -1,4 +1,9 @@
-﻿using System;
+﻿
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace PL.Controllers
 {
@@ -22,17 +28,18 @@ namespace PL.Controllers
         [HttpGet]
         public ActionResult CrearPaquete()
         {
-            //BL.Usuario usuario=new BL.Usuario();
-            //usuario.Nombre = "";
-            //BL.EstatusEntrega estatusEntrega=new BL.EstatusEntrega();
-            //estatusEntrega.IdEstatus = 0;
+            BL.Usuario usuario=new BL.Usuario();
+            usuario.Nombre = "";
+            BL.EstatusEntrega estatusEntrega=new BL.EstatusEntrega();
+            estatusEntrega.IdEstatus = 0;
 
-            List<object> resultPaquetes = BL.Paquete.GetAllSin();//usuario estatusentrega
+            List<object> resultPaquetes = BL.Paquete.GetAll(usuario,estatusEntrega);//usuario estatusentrega
             List<object> resultEstatusEntrega = BL.EstatusEntrega.GetAll();
 
             BL.Paquete paquete=new BL.Paquete();
             paquete.EstatusEntrega=new BL.EstatusEntrega();
-            paquete.Usuario = new BL.Usuario();
+            paquete.Repartidor = new BL.Repartidor();
+            paquete.Repartidor.Usuario = new BL.Usuario();
             paquete.Paquetes = new List<object>();
             paquete.EstatusEntrega.EstatusEntregas = new List<object>();
 
@@ -40,6 +47,8 @@ namespace PL.Controllers
             {
                 paquete.Paquetes=resultPaquetes;
                 paquete.EstatusEntrega.EstatusEntregas = resultEstatusEntrega;
+                paquete.Repartidor.Usuario.Nombre=usuario.Nombre;
+                paquete.EstatusEntrega.IdEstatus = estatusEntrega.IdEstatus;
             }
             else
             {
@@ -87,24 +96,27 @@ namespace PL.Controllers
             else if (paquete.Repartidor.Usuario.Nombre==null && estatusEntrega.IdEstatus==0)
             {
                 ////Vacias
-                //usuario.Nombre = "";
-                //estatusEntrega.IdEstatus=0;
+                usuario.Nombre = "";
+                estatusEntrega.IdEstatus=0;
                 
                 //GetAll
-                List<object> resultado = BL.Paquete.GetAllSin();
+                List<object> resultado = BL.Paquete.GetAll(usuario,estatusEntrega);
                 //Lista de EstatusEntrega
                 List<object> resultEstatusEntrega = BL.EstatusEntrega.GetAll();
 
                 paquete.Paquetes = new List<object>();
                 //instancia
                 paquete.EstatusEntrega = new BL.EstatusEntrega();
-                //paquete.Repartidor.Usuario = new BL.Usuario();
+                paquete.Repartidor.Usuario = new BL.Usuario();
 
                 paquete.EstatusEntrega.EstatusEntregas = new List<object>();
                 if (resultado != null)
                 {
                     paquete.Paquetes = resultado;
                     paquete.EstatusEntrega.EstatusEntregas = resultEstatusEntrega;
+                    //Vacios
+                    paquete.Repartidor.Usuario.Nombre=usuario.Nombre;
+                    paquete.EstatusEntrega.IdEstatus = estatusEntrega.IdEstatus;
                 }
                 else
                 {
@@ -159,17 +171,65 @@ namespace PL.Controllers
 
         public BL.Apoyo GetPaquete(BL.Apoyo apoyo)
         {
-            var paqueteSession = Newtonsoft.Json.JsonConvert.DeserializeObject<List<object>>(HttpContext.Session.GetString("Paquete"));
+           
+            var paqueteSession = Newtonsoft.Json.JsonConvert.DeserializeObject<List<object>>(HttpContext.Session["ListaPDF"].ToString());
             foreach (var obj in paqueteSession)
             {
-                BL.Paquete objPaquete=Newtonsoft.Json.JsonConvert.DeserializeObject<BL.Paquete>
+                BL.Paquete objPaquete = Newtonsoft.Json.JsonConvert.DeserializeObject<BL.Paquete>(obj.ToString());
+                apoyo.ListaPDF.Add(objPaquete);
             }
+            return apoyo;
         }
         public ActionResult GeneratePDF()
         {
-            BL.Paquete paquete = new BL.Paquete();
-            paquete.Paquetes = new List<object>();
+            BL.Apoyo apoyo = new BL.Apoyo();
+            apoyo.ListaPDF = new List<object>();
+            GetPaquete(apoyo);
+            
+            string rutaPDF=Path.GetTempFileName()+".pdf";
+            using (PdfDocument pdfDocument =new PdfDocument(new PdfWriter(rutaPDF)))
+            {
+                using (Document document=new Document(pdfDocument))
+                {
+                    document.Add(new Paragraph("Resumen de los paquetes"));
+
+                    Table table = new Table(5);
+                    table.SetWidth(UnitValue.CreatePercentValue(100));
+
+                    table.AddHeaderCell("Id Paquete");
+                    table.AddHeaderCell("Destino");
+                    table.AddHeaderCell("Origen");
+                    table.AddHeaderCell("Estatus");
+                    table.AddHeaderCell("Repartidor");
+                    table.AddHeaderCell("Unidad Repartidor");
+                    table.AddHeaderCell("Fecha Estimada Entrega");
+
+                    foreach (BL.Paquete paquete in apoyo.ListaPDF)
+                    {
+                        table.AddCell(paquete.IdPaquete.ToString());
+                        table.AddCell(paquete.DireccionOrigen);
+                        table.AddCell(paquete.DireccionEntrega);
+                        table.AddCell(paquete.EstatusEntrega.Estatus);
+                        table.AddCell(paquete.Repartidor.Usuario.Nombre);
+                        table.AddCell(paquete.Repartidor.UnidadEntrega.NumeroPlaca);
+                        table.AddCell(paquete.FechaEstimadaEntrega.ToString());
+
+                    }
+                    document.Add(table);
+
+                }
+
+            }
+            byte[] filesBytes = System.IO.File.ReadAllBytes(rutaPDF);
+            System.IO.File.Delete(rutaPDF);
+            Session.Clear();
+
+            return new FileStreamResult(new MemoryStream(filesBytes), "application/pdf")
+            {
+                FileDownloadName = "ReportePaquetes.pdf"
+            };
 
         }
+        
     }
 }
