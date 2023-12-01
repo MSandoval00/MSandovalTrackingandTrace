@@ -168,23 +168,30 @@ namespace PL.Controllers
                 return View("Modal");
             }
         }
-
-        public BL.Apoyo GetPaquete(BL.Apoyo apoyo)
+        public BL.Paquete GetPaquete(BL.Paquete paquete)
         {
-           
-            var paqueteSession = Newtonsoft.Json.JsonConvert.DeserializeObject<List<object>>(HttpContext.Session["ListaPDF"].ToString());
-            foreach (var obj in paqueteSession)
+            if (paquete!=null)
             {
-                BL.Paquete objPaquete = Newtonsoft.Json.JsonConvert.DeserializeObject<BL.Paquete>(obj.ToString());
-                apoyo.ListaPDF.Add(objPaquete);
+                paquete.Paquetes = paquete.Paquetes;
             }
-            return apoyo;
+            return paquete;
         }
-        public ActionResult GeneratePDF()
+        public ActionResult GeneratePDF(BL.Usuario usuario, BL.EstatusEntrega estatusEntrega)
         {
-            BL.Apoyo apoyo = new BL.Apoyo();
-            apoyo.ListaPDF = new List<object>();
-            GetPaquete(apoyo);
+            BL.Paquete paquete = new BL.Paquete();
+            
+            paquete.Paquetes = new List<object>();
+            usuario.Nombre = "";
+            estatusEntrega.IdEstatus = 0;
+
+            List<object> listaPaquetes =BL.Paquete.GetAll(usuario,estatusEntrega);
+            if (listaPaquetes!=null)
+            {
+                paquete.Paquetes=listaPaquetes;
+                paquete = GetPaquete(paquete);
+            }
+           
+
             
             string rutaPDF=Path.GetTempFileName()+".pdf";
             using (PdfDocument pdfDocument =new PdfDocument(new PdfWriter(rutaPDF)))
@@ -193,7 +200,7 @@ namespace PL.Controllers
                 {
                     document.Add(new Paragraph("Resumen de los paquetes"));
 
-                    Table table = new Table(5);
+                    Table table = new Table(7);
                     table.SetWidth(UnitValue.CreatePercentValue(100));
 
                     table.AddHeaderCell("Id Paquete");
@@ -204,15 +211,15 @@ namespace PL.Controllers
                     table.AddHeaderCell("Unidad Repartidor");
                     table.AddHeaderCell("Fecha Estimada Entrega");
 
-                    foreach (BL.Paquete paquete in apoyo.ListaPDF)
+                    foreach (BL.Paquete paquetePDF in paquete.Paquetes)
                     {
-                        table.AddCell(paquete.IdPaquete.ToString());
-                        table.AddCell(paquete.DireccionOrigen);
-                        table.AddCell(paquete.DireccionEntrega);
-                        table.AddCell(paquete.EstatusEntrega.Estatus);
-                        table.AddCell(paquete.Repartidor.Usuario.Nombre);
-                        table.AddCell(paquete.Repartidor.UnidadEntrega.NumeroPlaca);
-                        table.AddCell(paquete.FechaEstimadaEntrega.ToString());
+                        table.AddCell(paquetePDF.IdPaquete.ToString());
+                        table.AddCell(paquetePDF.DireccionOrigen);
+                        table.AddCell(paquetePDF.DireccionEntrega);
+                        table.AddCell(paquetePDF.EstatusEntrega.Estatus);
+                        table.AddCell(paquetePDF.Usuario.Nombre);
+                        table.AddCell(paquetePDF.Repartidor.UnidadEntrega.NumeroPlaca);
+                        table.AddCell(paquetePDF.FechaEstimadaEntrega.ToString());
 
                     }
                     document.Add(table);
@@ -222,7 +229,7 @@ namespace PL.Controllers
             }
             byte[] filesBytes = System.IO.File.ReadAllBytes(rutaPDF);
             System.IO.File.Delete(rutaPDF);
-            Session.Clear();
+            //Session.Clear();
 
             return new FileStreamResult(new MemoryStream(filesBytes), "application/pdf")
             {
