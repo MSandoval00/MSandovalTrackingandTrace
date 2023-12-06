@@ -43,7 +43,14 @@
         </div>
         <br />
         <div class="row text-center">
-             <a href="@Url.Action("GeneratePDF")" id="btnGuardar" class="btn btn-danger"><span class="glyphicon glyphicon-download"> Generar PDF</span></a>
+            @using (Html.BeginForm("GeneratePDF", "Paquete", FormMethod.Post, new { enctype = "multipart/form-control" }))
+            {
+                @Html.HiddenFor(Model => Model.Repartidor.Usuario.Nombre)
+                @Html.HiddenFor(Model=> Model.EstatusEntrega.IdEstatus)
+                <button class="btn btn-danger">Generar PDF</button>
+               // <a href="@Url.Action("GeneratePDF", new {usuario=Model.Repartidor.Usuario.Nombre})" id="btnGuardar" class="btn btn-danger"><span class="glyphicon glyphicon-download"> Generar PDF</span></a>
+            }
+
         </div>
     </div>
     <hr />

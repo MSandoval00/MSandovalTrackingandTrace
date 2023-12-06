@@ -176,13 +176,21 @@ namespace PL.Controllers
             }
             return paquete;
         }
-        public ActionResult GeneratePDF(BL.Usuario usuario, BL.EstatusEntrega estatusEntrega)
+        [HttpPost]
+        public ActionResult GeneratePDF(BL.Paquete paquete,BL.Usuario usuario, BL.EstatusEntrega estatusEntrega)
         {
-            BL.Paquete paquete = new BL.Paquete();
-            
+           
             paquete.Paquetes = new List<object>();
-            usuario.Nombre = "";
-            estatusEntrega.IdEstatus = 0;
+            if (paquete.Repartidor.Usuario.Nombre=="")
+            {
+                paquete.Repartidor.Usuario.Nombre = "";
+            }
+            if (paquete.EstatusEntrega.IdEstatus==0)
+            {
+                paquete.EstatusEntrega.IdEstatus = 0;
+            }
+            usuario.Nombre = paquete.Repartidor.Usuario.Nombre;
+            estatusEntrega.IdEstatus = paquete.EstatusEntrega.IdEstatus;
 
             List<object> listaPaquetes =BL.Paquete.GetAll(usuario,estatusEntrega);
             if (listaPaquetes!=null)
